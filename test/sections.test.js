@@ -34,4 +34,9 @@ store._sections.set('ws/main/tenders',[{id:'t1',rec:{region:'N',value:5,status:'
  st._sections.set('ws/main/tasks',Array.from({length:60},(_,i)=>({id:'k'+i,rec:{g:'g'+i,v:1}})).concat(Array.from({length:30},(_,i)=>({id:'m'+i,rec:{g:'g0',v:1}}))));
  r=await ex({section:'tasks',fn:'sum',valueField:'v',groupBy:'g'});a.strictEqual(r.result.total,90);a.strictEqual(r.result.groupsTotal,60);a.strictEqual(r.result.groupsShown,50);a.strictEqual(r.result.groups.find(x=>x.label==='g0').refsTruncated,true);a.strictEqual(r.result.caveats.some(c=>/top 50 of 60/.test(c)),true);
  a.deepStrictEqual(await S.schemas(st,'u','open quotes','seller'),[]);a.strictEqual((await S.schemas(st,'u','open quotes','admin')).length,1);
+ {st._sections.set('ws/main/contracts',[{id:'1',rec:{v:10,only:null,big:1e21,m:'5'}},{id:'2',rec:{v:'n/a',only:null,big:3,m:'7'}},{id:'3',rec:{v:30,only:null,big:Infinity,m:'x'}},{id:'4',rec:{v:'20',only:null,big:2,m:'y'}}]);
+ let r=await ex({section:'contracts',fn:'sum',valueField:'v'});assert.strictEqual(r.result.total,60,'mixed numeric+n/a column stays numeric, n/a skipped');assert(r.result.caveats.some(c=>/skipped/.test(c)),'skip is reported');assert(r.result.caveats.some(c=>/exact to 6 decimal/.test(c)),'precision stated');
+ await assert.rejects(()=>ex({section:'contracts',fn:'sum',valueField:'only'}),/unknown field/);
+ r=await ex({section:'contracts',fn:'sum',valueField:'big'});assert.strictEqual(r.result.total,5,'1e21 and Infinity skipped, no throw');
+ await assert.rejects(()=>ex({section:'contracts',fn:'sum',valueField:'m'}),/not numeric/,'mostly-text column is not numeric')}
  console.log('section calc accuracy/truncation/schema gate ok (mock only)')})().catch(x=>{console.error(x);process.exit(1)});
