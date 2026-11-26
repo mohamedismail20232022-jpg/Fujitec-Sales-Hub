@@ -40,6 +40,8 @@ r=await ask([AG,'Jeddah is the highest at 999999 [S1].']);{const g=await cs({act
 r=await ask([AG,'Sure, here you go.']);a=r.body.answer;assert(!/Sure, here you go/.test(a)&&/150500\.5/.test(a)&&/323750\.75/.test(a),'unsupported prose dropped: '+a);
 // 2c) model text asserts "conflicting figures" in free text while the server grounding check finds no conflict: invented claim must not survive, no raw prose visible or persisted
 r=await ask([AG,'There are conflicting figures in the documents; Jeddah earned 777777 in total.']);a=r.body.answer;assert(!/777777|conflicting figures|Jeddah earned/.test(a)&&/323750\.75/.test(a),'free-text conflict phrase does not bypass render: '+a);{const g=await cs({action:'get',chatId:r.body.chatId});const last=g.body.messages.filter(m=>m.role==='assistant').pop();assert.strictEqual(last.text,a);assert(!/777777|conflicting figures/.test(JSON.stringify(g.body.messages)),'persisted clean')}
+// 2d) question names two groups: server-computed pairwise difference and ratio shown
+r=await ask([AG,'x']);a=r.body.answer;assert(/52500\.5/.test(a)&&/1\.535719388/.test(a)&&/Formula: 150500\.5 - 98000/.test(a),'pairwise from server: '+a);
 // 6) unit: empty / zero / negative / tie groups
 const {renderAggregate}=require('../lib/chat');const mk2=(labels,values,total,caveats)=>({result:{fn:'sum',labels,values,refs:labels.map((_,i)=>'f!S!B'+(i+2)),total:{value:total},file:'f',sheet:'S',caveats:caveats||[]}});
 let x=renderAggregate(mk2([],[],0),false);assert(/Total \(sum\) = .0./.test(x)&&!/Highest/.test(x),'empty: '+x);
