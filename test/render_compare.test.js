@@ -1,0 +1,11 @@
+const assert=require('assert'),{renderCompare,fmtN}=require('../lib/chat');
+const mk=(o)=>({result:Object.assign({kind:'compare',op:'pct_change',result:{value:10,unit:'%',formula:'(b-a)/a*100'},a:{label:'X',value:5,refs:'f!S!B2',file:'f',sheet:'S'},b:{label:'Y',value:6,refs:'f!S!B3',file:'f',sheet:'S'},caveats:[]},o)});
+let t=renderCompare(mk({}),false);assert(/Result = 10 %/.test(t)&&/A = .X.: .5./.test(t)&&/B = .Y.: .6./.test(t));
+t=renderCompare(mk({result:{value:0,unit:'',formula:'f'}}),false);assert(/Result = 0/.test(t),'zero shown');
+t=renderCompare(mk({result:{value:-12.5,unit:'%',formula:'f'}}),false);assert(/Result = -12\.5 %/.test(t),'negative');
+assert.strictEqual(fmtN(1e21),'1000000000000000000000');assert.strictEqual(fmtN(123456789012.123456),'123456789012.12346');assert.strictEqual(fmtN(0.1+0.2),'0.30000000000000004');
+const refs=Array.from({length:40},(_, i)=>'f!S!B'+(i+2)).join(', ');t=renderCompare(mk({a:{label:'X',value:5,refs,file:'f',sheet:'S'}}),false);assert(/40 cells\/refs in total/.test(t)&&/\.\.\./.test(t),'refs summarized with count');
+t=renderCompare(mk({caveats:['2 non-numeric cell(s) skipped']}),true);assert(/Caveats:/.test(t)&&/skipped/.test(t),'caveats kept');
+t=renderCompare(mk({op:'share'}),false);assert(/share/.test(t));
+assert(!/\b(above|below|higher|lower|greater|more than|less than)\b/i.test(renderCompare(mk({}),false)),'no direction words');
+console.log('render_compare edge tests passed');
