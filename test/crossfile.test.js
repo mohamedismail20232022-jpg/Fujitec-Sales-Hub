@@ -38,3 +38,11 @@ const env={DOC_SIGNING_SECRET:'test-only-signing-secret-0123456789abcdef',NODE_E
  o=await C.run({uid:'u',b:{question:'What is the total contract value?',fileIds:[c]},store,env,provider:p5,role:'viewer'});assert(!o.body.groundingConflict,'labelled figure gives no conflict');
  assert(!GC.check('How many lifts?','There are 3 lifts',['Lift 9000 total 5000']).conflict,'non-total question not flagged');
  console.log('cross-file + grounding ok (memory store, mock provider only)')})().catch(e=>{console.error(e);process.exit(1)});
+// provenance: calculated figure carries a server-generated source block (mock only)
+(async()=>{const fs=require('fs'),D=require('../lib/docs'),C=require('../lib/chat'),store=require('../lib/store').memory();const E={DOC_SIGNING_SECRET:'test-only-signing-secret-0123456789abcdef',NODE_ENV:'test',AI_CTX_CHARS:'14000'};
+ const big=(await D.ingest({uid:'u',name:'big.xlsx',buf:fs.readFileSync('fx/big.xlsx'),store,env:E})).file.id;
+ const callB='<tool_call>'+JSON.stringify({tool:'aggregate',args:{spec:{fileId:big,sheet:'Big',labelCol:'E',valueCol:'C',fn:'sum'}}})+'</tool_call>';
+ const pr={name:'mock',complete:async b=>/You are a planner/.test(b.system)?(/Server results so far/.test(JSON.stringify(b.messages))?'DONE':callB):'The total is 3498135773.31 [S1].'};
+ const o=await C.run({uid:'u',b:{question:'What is the total Revenue by Note?',fileIds:[big]},store,env:E,provider:pr,role:'viewer'});
+ assert(o.body.calcProvenance&&/Calculation source \(server-executed\)/.test(o.body.answer)&&/big\.xlsx \/ Big: sum = 3498135773\.31 over 70000 cells/.test(o.body.answer),'server provenance block: '+o.body.answer);
+ console.log('calc provenance ok (mock only)')})().catch(e=>{console.error(e);process.exit(1)});
