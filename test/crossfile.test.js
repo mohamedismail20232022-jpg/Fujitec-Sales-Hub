@@ -44,5 +44,5 @@ const env={DOC_SIGNING_SECRET:'test-only-signing-secret-0123456789abcdef',NODE_E
  const callB='<tool_call>'+JSON.stringify({tool:'aggregate',args:{spec:{fileId:big,sheet:'Big',labelCol:'E',valueCol:'C',fn:'sum'}}})+'</tool_call>';
  const pr={name:'mock',complete:async b=>/You are a planner/.test(b.system)?(/Server results so far/.test(JSON.stringify(b.messages))?'DONE':callB):'The total is 3498135773.31 [S1].'};
  const o=await C.run({uid:'u',b:{question:'What is the total Revenue by Note?',fileIds:[big]},store,env:E,provider:pr,role:'viewer'});
- assert(o.body.calcProvenance&&/Calculation source \(server-executed\)/.test(o.body.answer)&&/big\.xlsx \/ Big: sum = 3498135773\.31 over 70000 cells/.test(o.body.answer),'server provenance block: '+o.body.answer);
+ assert(!/\[S1\]/.test(o.body.answer.split('[Calculation source')[0])&&o.body.calcCitationsRemoved,'excerpt citation removed from calc figure: '+o.body.answer);assert(o.body.calcProvenance&&/Calculation source \(server-executed\)/.test(o.body.answer)&&/big\.xlsx \/ Big: sum = 3498135773\.31 over 70000 cells/.test(o.body.answer),'server provenance block: '+o.body.answer);
  console.log('calc provenance ok (mock only)')})().catch(e=>{console.error(e);process.exit(1)});
