@@ -15,6 +15,7 @@ let reads=0;const real=store.listSection.bind(store);store.listSection=async(...
   const p2={name:'mock',complete:async b=>/You are a planner/.test(b.system)?'I cannot decide':'FILTERED ANSWER: 1 open tender worth 5'};
   const o=await C.run({uid:'u',b:{question:'How many open tenders do we have?',fileIds:[fid]},store,env,provider:p2,role:'manager'});
   assert(!/FILTERED ANSWER/.test(o.body.answer),'model free text not used after planner failure');assert(/cannot answer the question as asked/.test(o.body.answer)&&/3 visible record/.test(o.body.answer)&&/no filters/.test(o.body.answer),o.body.answer);
+  {const oa=await C.run({uid:'u',b:{question:'\u0643\u0645 \u0639\u062f\u062f \u0627\u0644\u0645\u0646\u0627\u0642\u0635\u0627\u062a \u0627\u0644\u0645\u0641\u062a\u0648\u062d\u0629\u061f',fileIds:[fid]},store,env,provider:p2,role:'manager'});assert(/[\u0600-\u06FF]/.test(oa.body.answer)&&!/cannot answer/.test(oa.body.answer),'Arabic question gets Arabic server template')}
   const call='<tool_call>'+JSON.stringify({tool:'section',args:{section:'tenders',fn:'sum',valueField:'value'}})+'</tool_call>';
   const p3={name:'mock',complete:async b=>/You are a planner/.test(b.system)?call:'The total is 5.'};
   const o2=await C.run({uid:'u',b:{question:'What is the total value of tenders?',fileIds:[fid]},store,env,provider:p3,role:'admin'});
