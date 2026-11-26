@@ -1,0 +1,1 @@
+{"functions":{"api/doc/*.js":{"includeFiles":"{lib/fonts/**,lib/tessdata/**,node_modules/pdfjs-dist/legacy/build/**,node_modules/pdfjs-dist/package.json,node_modules/tesseract.js/src/**,node_modules/tesseract.js-core/**,node_modules/@napi-rs/canvas*/**}","maxDuration":120}}}
