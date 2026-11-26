@@ -1,0 +1,16 @@
+const assert=require('assert');const {renderAggregate}=require('../lib/chat');
+const mk=(labels,values)=>({result:{fn:'sum',labels,values,refs:labels.map((_,i)=>'f!S!B'+(i+2)),total:{value:values.reduce((a,b)=>a+b,0)},file:'f',sheet:'S',caveats:[]}});
+const R=(l,v,q)=>renderAggregate(mk(l,v),false,q).replace(/[\u2066-\u2069]/g,'');
+let x;
+x=R(['Riyadh','Jeddah','Dammam'],[150,100,50],'Riyadh vs Jeddah');assert(/Difference = 50\b/.test(x)&&/Ratio = 1\.5\b/.test(x),x);
+x=R(['Riyadh','Jeddah','Dammam'],[150,100,50],'total sales');assert(!/Pairwise/.test(x),'no pair w/o two labels');
+x=R(['Riyadh','Jeddah','Dammam'],[150,100,50],'Riyadh only');assert(!/Pairwise/.test(x),'one label');
+x=R(['Riyadh','Jeddah','Dammam'],[150,100,50],'Riyadh Jeddah Dammam');assert(!/Pairwise/.test(x),'three labels');
+x=R(['Riyadh','Riyadh North','Jeddah'],[1,2,3],'Riyadh North vs Jeddah');assert(!/Pairwise/.test(x),'substring overlap must not pair: '+x);
+x=R(['Riyadh','Jeddah'],[5,0],'Riyadh vs Jeddah');assert(/Difference = 5\b/.test(x)&&!/Ratio/.test(x),'zero denominator: '+x);
+x=R(['Riyadh','Jeddah'],[-5,10],'Riyadh vs Jeddah');assert(/Difference = -15\b/.test(x)&&/Ratio = -0\.5\b/.test(x),x);
+x=R(['Riyadh','Jeddah'],[0.3,0.1],'Riyadh vs Jeddah');assert(/Difference = 0\.2\b/.test(x)&&!/0\.19999/.test(x),x);
+x=R(['Riyadh','Jeddah'],[1e21,3],'Riyadh vs Jeddah');assert(!/NaN|Infinity/.test(x),x);
+x=R(['Riyadh','Jeddah'],[123456789012,1],'Riyadh vs Jeddah');assert(/Difference = 123456789011\b/.test(x),x);
+x=R(['Riyadh','Jeddah'],[2,1],'Riyadh not Jeddah');console.log('negated mention ->',/Pairwise/.test(x)?'pair shown (formulas still exact)':'none');
+console.log('pairwise_edge ok');
