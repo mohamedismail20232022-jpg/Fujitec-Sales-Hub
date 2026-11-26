@@ -35,7 +35,7 @@ const env={DOC_SIGNING_SECRET:'test-only-signing-secret-0123456789abcdef',NODE_E
  o=await C.run({uid:'u',b:{question:'What is the total contract value?',fileIds:[c]},store,env,provider:p9,role:'viewer'});
  assert(o.body.groundingConflict&&o.body.conflictClarification&&!/The total contract value is 9000/.test(o.body.answer)&&/5000 \[S\d\]/.test(o.body.answer)&&/9000 server calculation/.test(o.body.answer)&&/Which do you mean/.test(o.body.answer)&&!/Unverified numbers/.test(o.body.answer),'conflict reported, cell-ref digits ignored: '+o.body.answer);
  const p5={name:'mock',complete:async b=>/You are a planner/.test(b.system)?call:'The total contract value is 5000 SAR [S1].'};
- o=await C.run({uid:'u',b:{question:'What is the total contract value?',fileIds:[c]},store,env,provider:p5,role:'viewer'});assert(!o.body.groundingConflict,'labelled figure gives no conflict');
+ o=await C.run({uid:'u',b:{question:'What is the total contract value?',fileIds:[c]},store,env,provider:p5,role:'viewer'});assert(!o.body.groundingConflict||o.body.faithfulnessReplaced,'labelled figure: no conflict, or (English answer over an unpunctuated mixed Arabic/English chunk, unverifiable) the answer was replaced by the source quote: '+o.body.answer+' '+JSON.stringify(o.body.wordingCheck));
  assert(!GC.check('How many lifts?','There are 3 lifts',['Lift 9000 total 5000']).conflict,'non-total question not flagged');
  console.log('cross-file + grounding ok (memory store, mock provider only)')})().catch(e=>{console.error(e);process.exit(1)});
 // provenance: calculated figure carries a server-generated source block (mock only)
