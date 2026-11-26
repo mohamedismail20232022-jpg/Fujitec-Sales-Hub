@@ -10,4 +10,13 @@ let reads=0;const real=store.listSection.bind(store);store.listSection=async(...
   assert(/limited to admin and manager/.test(String(o.body.answer)+JSON.stringify(o.body.notes||[])),'user told why: '+role)}
  reads=0;seen.length=0;const ok=await C.run({uid:'u',b:{question:'How many open tenders do we have?',fileIds:[fid]},store,env,provider,role:'admin'});
  assert(reads>0&&seen.join('').includes('Site sections you can query'),'admin gets schema');assert(!seen.join('').includes('PRIVATE-TENDER-NOTE'),'raw record values are not sent to the model in the schema');
+ // failing planner: model-independent fallback, filtered question must NOT be answered from the unfiltered count
+ { store._sections.set('ws/main/tenders',[{id:'t1',rec:{status:'open',value:5}},{id:'t2',rec:{status:'won',value:'n/a'}},{id:'t3',rec:{status:'open',value:7}}]);
+  const p2={name:'mock',complete:async b=>/You are a planner/.test(b.system)?'I cannot decide':'FILTERED ANSWER: 1 open tender worth 5'};
+  const o=await C.run({uid:'u',b:{question:'How many open tenders do we have?',fileIds:[fid]},store,env,provider:p2,role:'manager'});
+  assert(!/FILTERED ANSWER/.test(o.body.answer),'model free text not used after planner failure');assert(/cannot answer the question as asked/.test(o.body.answer)&&/3 visible record/.test(o.body.answer)&&/no filters/.test(o.body.answer),o.body.answer);
+  const call='<tool_call>'+JSON.stringify({tool:'section',args:{section:'tenders',fn:'sum',valueField:'value'}})+'</tool_call>';
+  const p3={name:'mock',complete:async b=>/You are a planner/.test(b.system)?call:'The total is 5.'};
+  const o2=await C.run({uid:'u',b:{question:'What is the total value of tenders?',fileIds:[fid]},store,env,provider:p3,role:'admin'});
+  assert(/Calculation caveats:/.test(o2.body.answer)&&/skipped/.test(o2.body.answer)&&/6 decimal/.test(o2.body.answer),'skip and precision caveats are visible in the answer: '+o2.body.answer)}
  console.log('chat entry section gate ok (memory store + mock provider, no network)')})().catch(e=>{console.error(e);process.exit(1)});
