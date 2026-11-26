@@ -21,3 +21,17 @@ store._sections.set('ws/main/tenders',[{id:'t1',rec:{region:'N',value:5,status:'
  for(const role of ['admin','manager']){const r=await TC.execute({tool:'section',args:{section:'tenders',fn:'count'}},{uid:'u',store:spy,env:{},allowed:[],role});a.strictEqual(r.result.total,1)}
  const e=await S.execute({section:'tenders',fn:'count',filters:[{field:'value',op:'gt',value:100}]},{store:st,uid:'u',role:'admin'});a.strictEqual(e.result.groups.length,0);a.strictEqual(e.result.matched,0);
  console.log('section role gate ok (mock only)')})().catch(x=>{console.error(x);process.exit(1)});
+(async()=>{const a=require('assert'),S=require('../lib/sections'),st=require('../lib/store').memory();
+ st._sections.set('ws/typed/quotes',[{id:'1',rec:{region:'N',amt:0.1,flag:true,n:null,ar:'٣٢٠',txt:'x'}},{id:'2',rec:{region:'N',amt:0.2,flag:false,n:null,ar:'١٫٥',txt:'y'}},{id:'3',rec:{region:'S',amt:'1,000.10',flag:true,n:5,ar:'٣٢٠',txt:'z'}}]);
+ const ex=x=>S.execute(x,{store:st,uid:'u',role:'admin'});
+ let r=await ex({section:'quotes',fn:'sum',valueField:'amt'});a.strictEqual(r.result.total,1000.4,'exact decimal sum (0.1+0.2+1000.1)');
+ r=await ex({section:'quotes',fn:'sum',valueField:'ar'});a.strictEqual(r.result.total,641.5,'Arabic-Indic digits normalized');
+ await a.rejects(()=>ex({section:'quotes',fn:'sum',valueField:'flag'}),/not numeric|unknown/);
+ r=await ex({section:'quotes',fn:'sum',valueField:'n'});a.strictEqual(r.result.total,5);a.strictEqual(r.result.caveats.some(c=>/skipped/.test(c)),true,'null is skipped, not 0');
+ await a.rejects(()=>ex({section:'quotes',fn:'count',groupBy:'regoin'}),/unknown field/);
+ await a.rejects(()=>ex({section:'quotes',fn:'count',filters:[{field:'nope',op:'eq',value:1}]}),/unknown field/);
+ await a.rejects(()=>ex({section:'quotes',fn:'sum',valueField:'txt'}),/not numeric/);
+ st._sections.set('ws/main/tasks',Array.from({length:60},(_,i)=>({id:'k'+i,rec:{g:'g'+i,v:1}})).concat(Array.from({length:30},(_,i)=>({id:'m'+i,rec:{g:'g0',v:1}}))));
+ r=await ex({section:'tasks',fn:'sum',valueField:'v',groupBy:'g'});a.strictEqual(r.result.total,90);a.strictEqual(r.result.groupsTotal,60);a.strictEqual(r.result.groupsShown,50);a.strictEqual(r.result.groups.find(x=>x.label==='g0').refsTruncated,true);a.strictEqual(r.result.caveats.some(c=>/top 50 of 60/.test(c)),true);
+ a.deepStrictEqual(await S.schemas(st,'u','open quotes','seller'),[]);a.strictEqual((await S.schemas(st,'u','open quotes','admin')).length,1);
+ console.log('section calc accuracy/truncation/schema gate ok (mock only)')})().catch(x=>{console.error(x);process.exit(1)});
