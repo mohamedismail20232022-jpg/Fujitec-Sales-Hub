@@ -35,3 +35,7 @@ const C=[
 let keptOK=0,keptN=0,catchOK=0,catchN=0;const bad=[];
 for(const [k,a,q,t] of C){const r=S.enforce(a,q,[{id:'S1',text:t}]),kept=!r.replaced.length;if(k){keptN++;if(kept)keptOK++;else bad.push('FALSE-ABSTAIN: '+a)}else{catchN++;if(!kept)catchOK++;else bad.push('MISSED: '+a)}}
 console.log('faithfulness regression (mock, own authored cases): legit kept '+keptOK+'/'+keptN+'; unsupported caught '+catchOK+'/'+catchN);if(bad.length){console.error(bad.join('\n'));process.exit(1)}
+{ // list markers must not become separate "uncited sentences"
+  const r=S.enforce('1. The monthly fee is SAR 12,000. [S1]\n2. Support is extended to Saturdays. [S1]\n- The late fee is 1.5% per month [S1]','Terms?',[{id:'S1',text:en+' SAR 12,000 monthly fee. Support is extended to Saturdays.'}]);
+  if(/sentence removed|\u062a\u0645 \u062d\u0630\u0641/.test(r.answer)&&r.replaced.some(x=>x.uncited&&/^\d?\.?$/.test(x.original))){console.error('LIST MARKER BUG',JSON.stringify(r.replaced));process.exit(1)}
+}
