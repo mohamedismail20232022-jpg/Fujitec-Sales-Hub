@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr" data-theme="light" data-density="comfortable">
+<html lang="en" dir="ltr" data-ui="2" data-theme="light" data-density="comfortable">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -893,6 +893,16 @@ main[tabindex="-1"]:focus {
   border: var(--bw) solid var(--border);
   background: var(--surface-2);
   font-size: var(--fs-13);
+}
+.notice > * { min-width: 0; }
+.notice .btn { flex-shrink: 0; white-space: nowrap; }
+@media (max-width: 700px) {
+  .notice { flex-wrap: wrap; padding-inline-end: 52px; }
+  .fm-orb { width: 44px; height: 44px; inset-inline-end: 6px; opacity: .92; }
+  .notice > :last-child:not(:first-child) { margin-inline-start: auto; max-width: 100%; }
+  .notice > :nth-child(2) { flex: 1 1 180px; }
+  .notice .btn { max-width: 100%; white-space: normal; }
+  main, #app, .main { padding-bottom: max(var(--s-6, 24px), 150px); }
 }
 .notice-info { background: var(--info-soft); border-color: var(--info-border); color: var(--info); }
 .notice-warn { background: var(--warn-soft); border-color: var(--warn-border); color: var(--warn); }
@@ -1943,7 +1953,126 @@ html{scroll-behavior:smooth}
 .fx-ok{padding:10px 12px;border-radius:var(--r-md);background:var(--ok-soft,#ECFDF3);color:var(--ok,#14532D);font-size:13px;font-weight:600}
 
 </style>
-</head>
+<style id="ui2-css">/* UI2 layer (flagged by html[data-ui="2"]). Presentation only: no data, ranking or actions change. */
+html[data-ui="2"] .ui2-home{display:flex;flex-direction:column;gap:20px}
+html[data-ui="2"] .ui2-home>.page-header{order:0}
+html[data-ui="2"] .ui2-home>.fx-hero{order:1}
+html[data-ui="2"] .ui2-home>.lk-att{order:2}
+html[data-ui="2"] .ui2-home>.ui2-queue{order:3}
+html[data-ui="2"] .ui2-home>.ui2-kpi{order:4}
+html[data-ui="2"] .ui2-home>.ui2-chart{order:5}
+html[data-ui="2"] .ui2-home>.fx-map{order:6}
+html[data-ui="2"] .ui2-home>*{margin:0}
+/* hero: one calm line, tools behind a toggle */
+html[data-ui="2"] .fx-hero.ui2-slim{padding:14px 18px;min-height:0;display:flex;align-items:center;gap:14px}
+html[data-ui="2"] .fx-hero.ui2-slim>*:not(.ui2-greet):not(.ui2-tt){display:none!important}
+html[data-ui="2"] .fx-hero.ui2-open>*:not(.ui2-greet):not(.ui2-tt){display:revert!important}
+html[data-ui="2"] .fx-hero.ui2-slim .ui2-greet{font-weight:700;font-size:15px}
+html[data-ui="2"] .fx-hero .ui2-tt{margin-inline-start:auto}
+/* queue: first rows visible, rest behind one button */
+html[data-ui="2"] .ui2-queue .card-body{max-height:480px;overflow:hidden;position:relative}
+html[data-ui="2"] .ui2-queue.ui2-all .card-body{max-height:none}
+html[data-ui="2"] .ui2-more{display:flex;justify-content:center;padding:12px;border-top:1px solid var(--border)}
+html[data-ui="2"] .ui2-queue.ui2-all .ui2-more .ui2-m1{display:none}
+html[data-ui="2"] .ui2-queue:not(.ui2-all) .ui2-more .ui2-m2{display:none}
+/* map: collapsed by default */
+html[data-ui="2"] .fx-map.ui2-fold>*:not(.ui2-ft){display:none}
+html[data-ui="2"] .fx-map.ui2-fold{padding:14px 18px;display:flex;align-items:center}
+html[data-ui="2"] .fx-map .ui2-ft{display:flex;width:100%;align-items:center;gap:10px;font-weight:700}
+html[data-ui="2"] .fx-map:not(.ui2-fold) .ui2-ft{margin-bottom:10px}
+/* calmer cards */
+html[data-ui="2"] .ui2-home .card{box-shadow:none}
+html[data-ui="2"] .lk-att{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:0;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg,16px);overflow:hidden}
+html[data-ui="2"] .lk-att .lk-ac{background:transparent!important;border:0!important;border-inline-start:1px solid var(--border)!important;border-radius:0!important;box-shadow:none!important;padding:12px 16px}
+html[data-ui="2"] .lk-att .lk-ac:first-child{border-inline-start:0!important}
+html[data-ui="2"] .lk-att .lk-ac.ok{opacity:1;color:var(--muted)}
+html[data-ui="2"] .lk-att .lk-ac.ok b,html[data-ui="2"] .lk-att .lk-ac.ok span,html[data-ui="2"] .lk-att .lk-ac.ok i{color:var(--muted)!important}
+html[data-ui="2"] .lk-att .lk-ac.danger b{color:var(--accent)}
+html[data-ui="2"] .fx-hero.ui2-slim{background:var(--surface)!important;background-image:none!important}
+html[data-ui="2"] .ui2-kpi{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px}
+html[data-ui="2"] .ui2-kpi .kpi-val{font-size:clamp(20px,1.9vw,26px);white-space:nowrap}
+html[data-ui="2"] .ui2-kpi .kpi-card{box-shadow:none}
+@media(max-width:820px){html[data-ui="2"] .lk-att{grid-template-columns:1fr 1fr}html[data-ui="2"] .lk-att .lk-ac:nth-child(odd){border-inline-start:0!important}html[data-ui="2"] .lk-att .lk-ac:nth-child(n+3){border-top:1px solid var(--border)!important}}
+
+html[data-ui="2"] .ui2-greet{display:none}
+html[data-ui="2"] .fx-hero.ui2-slim{display:none}
+html[data-ui="2"] .btn-primary,html[data-ui="2"] .btn.btn-primary,html[data-ui="2"] .btn-primary:hover{box-shadow:none!important}
+html[data-ui="2"] .btn{box-shadow:none!important}
+@media (max-width:760px){
+html[data-ui="2"] body{padding-top:0!important;margin-top:0!important}
+html[data-ui="2"] #demo-banner{position:sticky!important;top:0;left:0;right:0}
+html[data-ui="2"] .topbar{top:var(--ui2-bh,49px)!important}
+html[data-ui="2"] #fx-btn{width:40px!important;height:40px!important;min-width:0!important;padding:0!important;border-radius:50%!important;font-size:0!important;display:flex;align-items:center;justify-content:center;right:58px!important;left:auto!important;bottom:60px!important;top:auto!important}
+html[data-ui="2"] #fx-btn::before{content:"\2699";font-size:20px;line-height:1}
+html[data-ui="2"] .fm-orb{width:40px!important;height:40px!important;right:12px!important;left:auto!important;bottom:60px!important;top:auto!important}
+html[data-ui="2"] main,html[data-ui="2"] .main{padding-bottom:120px}
+html[data-ui="2"] body::after{content:"";position:fixed;left:0;right:0;bottom:56px;height:52px;background:var(--surface,#fff);border-top:1px solid var(--border,#ddd);z-index:55;pointer-events:none}
+html[data-ui="2"] #main-content{padding-bottom:64px}
+html[data-ui="2"] .mobile-row-card{display:grid!important;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px 14px;padding:12px 14px}
+html[data-ui="2"] .mobile-row-card>div:first-child{grid-column:1/-1}
+html[data-ui="2"] .mobile-row-kv{display:flex!important;flex-direction:column;align-items:flex-start!important;justify-content:flex-start;gap:2px;min-width:0}
+html[data-ui="2"] .mobile-row-kv>.muted{font-size:11px;letter-spacing:.02em}
+html[data-ui="2"] .mobile-row-kv a,html[data-ui="2"] .mobile-row-kv>span:last-child{white-space:normal!important;overflow:hidden}
+html[data-ui="2"] .mobile-row-kv a{overflow-wrap:anywhere;word-break:break-word}
+html[data-ui="2"] .mobile-row-kv>span:last-child{min-width:0;max-width:100%;overflow-wrap:anywhere;text-align:start}
+html[data-ui="2"] .table-toolbar.ui2-tbfold>*:not(input):not(.ui2-tbt){display:none!important}
+html[data-ui="2"] .table-toolbar .ui2-tbt{display:inline-flex}
+}
+@media (min-width:761px){html[data-ui="2"] .ui2-tbt{display:none!important}}
+@media (min-width:761px){
+html[data-ui="2"] body::after{content:"";position:fixed;left:248px;right:0;bottom:0;height:56px;background:var(--surface,#fff);border-top:1px solid var(--border,#ddd);z-index:55;pointer-events:none}
+html[data-ui="2"] #fx-btn{bottom:10px!important;right:76px!important;top:auto!important;left:auto!important}
+html[data-ui="2"] .fx-hint{bottom:9px!important;right:224px!important;top:auto!important;left:auto!important}
+html[data-ui="2"] .fm-orb{width:42px!important;height:42px!important;bottom:7px!important;right:20px!important;top:auto!important;left:auto!important}
+html[data-ui="2"] #main-content{padding-bottom:72px}
+}
+html[data-ui="2"] .ui2-pg{display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:10px 2px;font-size:13px;color:var(--muted)}
+html[data-ui="2"] .mobile-row-card[hidden]{display:none!important}
+@media (min-width:761px){
+html[dir="rtl"][data-ui="2"] body::after{left:0;right:248px}
+}
+@media (min-width:761px){
+html[dir="rtl"][data-ui="2"] .fm-orb{left:20px!important;right:auto!important}
+html[dir="rtl"][data-ui="2"] #fx-btn{left:76px!important;right:auto!important}
+html[dir="rtl"][data-ui="2"] .fx-hint{left:224px!important;right:auto!important}
+}
+html[data-ui="2"] .ui2-pg [hidden]{display:none!important}
+@media (max-width:760px){html[data-ui="2"] #main-content{padding-bottom:150px!important}}
+html[data-ui="2"] .chip-sample{white-space:nowrap;display:inline-block;flex:none}
+html[data-ui="2"] .mobile-row-kv>span:last-child{display:flex;flex-wrap:wrap;gap:4px 6px;align-items:center}
+html[data-ui="2"] .data-table td .chip{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;vertical-align:middle}
+html[data-ui="2"] .data-table td:has(>.chip),html[data-ui="2"] .data-table th:has(+ td .chip){min-width:max-content}
+html[data-ui="2"] .data-table td>.chip{max-width:none;overflow:visible;text-overflow:clip}
+@media (min-width:761px){
+html[data-ui="2"] table.data-table{table-layout:auto!important;width:max-content!important;min-width:100%}
+html[data-ui="2"] table.data-table td,html[data-ui="2"] table.data-table th{max-width:340px}
+html[data-ui="2"] table.data-table td:has(>.chip),html[data-ui="2"] table.data-table td:has(.chip){white-space:nowrap}
+}
+@media (min-width:761px){html[data-ui="2"] table.data-table td:nth-child(2){max-width:480px}}
+@media (min-width:761px){
+html[data-ui="2"] .table-wrap:has(>table.data-table){overflow-x:auto;background:linear-gradient(to right,var(--surface,#fff) 30%,transparent),linear-gradient(to left,var(--surface,#fff) 30%,transparent) right,linear-gradient(to right,rgba(0,0,0,.18),transparent) left,linear-gradient(to left,rgba(0,0,0,.18),transparent) right;background-repeat:no-repeat;background-size:40px 100%,40px 100%,14px 100%,14px 100%;background-attachment:local,local,scroll,scroll}
+html[data-ui="2"] .table-wrap:has(>table.data-table)::-webkit-scrollbar{height:12px}
+html[data-ui="2"] .table-wrap:has(>table.data-table)::-webkit-scrollbar-thumb{background:#8a8a8a;border-radius:6px}
+html[data-ui="2"] table.data-table td:nth-child(2){max-width:480px}
+}
+@media (min-width:761px){
+html[data-ui="2"] table.data-table td,html[data-ui="2"] table.data-table th{padding-left:8px;padding-right:8px;max-width:210px}
+html[data-ui="2"] table.data-table td:first-child,html[data-ui="2"] table.data-table th:first-child{max-width:40px;padding-left:12px;padding-right:4px}
+html[data-ui="2"] table.data-table td:nth-child(2){max-width:300px}
+html[data-ui="2"] table.data-table td:nth-child(n+3){font-size:13px}
+}
+@media (min-width:761px){
+html[data-ui="2"] table.data-table td:first-child:not(:has(input[type=checkbox])),html[data-ui="2"] table.data-table th:first-child:not(:has(input[type=checkbox])){max-width:340px;padding-left:12px;padding-right:8px}
+html[data-ui="2"] table.data-table td:first-child:not(:has(input[type=checkbox])) .chip,html[data-ui="2"] table.data-table td:first-child:not(:has(input[type=checkbox])) [class*=sample]{flex:none}
+}
+html[data-ui="2"] .mobile-row-card>div:nth-child(2){grid-column:1/-1}
+html[dir="rtl"][data-ui="2"] table.data-table td a,html[dir="rtl"][data-ui="2"] table.data-table td .truncate,html[dir="rtl"][data-ui="2"] table.data-table td>span{unicode-bidi:plaintext}
+html[dir="rtl"][data-ui="2"] table.data-table td a{direction:ltr;unicode-bidi:isolate;display:inline-block;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;vertical-align:middle}
+@media (min-width:761px){html[dir="rtl"][data-ui="2"] table.data-table td:first-child:not(:has(input[type=checkbox])),html[dir="rtl"][data-ui="2"] table.data-table td:nth-child(2){max-width:470px}}
+@media (min-width:761px){html[data-ui="2"] table.data-table td:has(>.row>.chip-sample){max-width:380px}}
+html[data-ui="2"] .btn:focus-visible,html[data-ui="2"] .btn-primary:focus-visible,html[data-ui="2"] .btn.btn-primary:focus-visible,html[data-ui="2"] .lk-att .lk-ac:focus-visible{box-shadow:var(--focus-ring)!important;outline:none}
+html[dir="rtl"][data-ui="2"] a.chip[data-ui2k]{direction:ltr;unicode-bidi:isolate}
+</style></head>
 <body>
 <a class="skip-link" href="#main-content">Skip to main content</a>
 
@@ -2508,8 +2637,9 @@ html{scroll-behavior:smooth}
       localStorage.setItem(STORAGE_KEY, JSON.stringify(_state));
       if (window.FX_SAVE && window.FX_SAVE.ok) window.FX_SAVE.ok();
     } catch (err) {
-      if (window.FX_SAVE && window.FX_SAVE.fail) window.FX_SAVE.fail(err);
-      if (FH.ui && FH.ui.toast) {
+      var _handled = false;
+      if (window.FX_SAVE && window.FX_SAVE.fail) _handled = window.FX_SAVE.fail(err) === true;
+      if (!_handled && FH.ui && FH.ui.toast) {
         FH.ui.toast('Browser storage quota exceeded — recent changes could not be persisted locally.', { tone: 'danger' });
       }
       if (FH.runtimeErrors) {
@@ -2586,6 +2716,7 @@ html{scroll-behavior:smooth}
       }
       return _state;
     },
+    hasPending: function () { return !!_savePending; },
     flush: function () {
       clearTimeout(_saveTimer);
       if (_savePending) writeNow();
@@ -3151,6 +3282,16 @@ html{scroll-behavior:smooth}
           });
         }
       }
+      if (entity === 'quotes' && patch && Array.isArray(patch.revisions)) {
+        const cur = FH.store.get('quotes', id);
+        (cur && cur.revisions || []).forEach(function (old) {
+          if (!old.locked) return;
+          const nw = patch.revisions.find(function (r) { return r.id === old.id; });
+          const same = nw && nw.locked === true && nw.revNo === old.revNo && nw.discountPct === old.discountPct
+            && JSON.stringify(nw.items) === JSON.stringify(old.items);
+          if (!same) throw errObj('CONFLICT', 'Revision ' + old.revNo + ' is locked and cannot be changed; create a new revision');
+        });
+      }
       const res = FH.store.update(entity, id, patch, meta);
       return sanitizeRecord(entity, res.after);
     },
@@ -3180,6 +3321,7 @@ html{scroll-behavior:smooth}
           throw errObj('GATE_BLOCKED', 'Stage gate requirements not met', { missing: missing });
         }
         const stageDef = FH.domain.getStage(toStage);
+        if (!stageDef) throw errObj('VALIDATION', 'Unknown stage: ' + String(toStage));
         const patch = {
           stageId: toStage,
           lastActivityAt: new Date().toISOString()
@@ -3240,6 +3382,8 @@ html{scroll-behavior:smooth}
 
       if (entity === 'quotes' && action === 'sendRevision') {
         if (!hasPerm('record.edit')) throw errObj('FORBIDDEN', 'Cannot send quotes');
+        if (typeof window.__fxIssueGuard === 'function') { const gmsg = window.__fxIssueGuard(); if (gmsg) throw errObj('CLOUD_ISSUE_DISABLED', gmsg); }
+        if (typeof window.__fxSendConsistency === 'function') { const cmsg = window.__fxSendConsistency(rec, payload && payload.revisionId); if (cmsg) throw errObj('CLOUD_NOT_SYNCED', cmsg); }
         const revId = payload && payload.revisionId;
         const revs = JSON.parse(JSON.stringify(rec.revisions || []));
         const rev = revs.find(function (r) { return r.id === revId; });
@@ -3256,6 +3400,8 @@ html{scroll-behavior:smooth}
         if (reqApprovals.length && rev.status !== 'approved') {
           throw errObj('APPROVAL_REQUIRED', 'Approval required before sending this revision', { required: reqApprovals });
         }
+        if (typeof window.__fxPendGet === 'function' && window.__fxPendGet(rec.id, rev)) throw errObj('CONFLICT', 'This revision is already waiting for cloud confirmation. Nothing more was sent.');
+        if (typeof window.__fxMakePending === 'function') { const pend = window.__fxMakePending(rec, rev.id, FH.currentUser().id); if (pend) { return sanitizeRecord('quotes', FH.store.get('quotes', id)); } }
         const now = new Date().toISOString();
         rev.status = 'sent';
         rev.locked = true;
@@ -4627,6 +4773,7 @@ html{scroll-behavior:smooth}
         <button type="button" class="btn btn-ghost btn-sm btn-icon" aria-label="Dismiss notification" data-toast-close="${id}">${ui.icon('x')}</button>
       </div>
     `);
+    try { const txt = String(msg); Array.prototype.slice.call(host.querySelectorAll('.toast')).forEach(function (t) { const sp = t.querySelector('span'); if (sp && sp.textContent === txt) t.remove(); }); const all = host.querySelectorAll('.toast'); for (let i = 0; i <= all.length - 3; i++) all[i].remove(); } catch (e) {}
     host.appendChild(el);
     if (o.undo) {
       const btn = el.querySelector('[data-toast-undo]');
@@ -14177,7 +14324,7 @@ html{scroll-behavior:smooth}
         targetTitle: q ? (q.title + (rev ? ' (Rev ' + rev.revNo + ')' : '')) : a.entityId,
         targetHref: '#/quotes/' + a.entityId + (rev ? '?rev=' + encodeURIComponent(rev.id) : ''),
         accountName: acc ? acc.name : '—',
-        amountDisplay: rev ? FH.fmtMoney(rev.total, q.currency) : '—',
+        amountDisplay: rev ? FH.fmtMoney(rev.total, q.currency) + (rev.discountLegacyMissing === true ? ' (historical, unverified)' : '') : '—',
         isSample: !!(a.isSample || (q && q.isSample))
       };
     }
@@ -14225,6 +14372,7 @@ html{scroll-behavior:smooth}
           </div>
           <div class="page-header-actions">
             <a href="#/settings/approvals" class="btn btn-sm">${FH.ui.icon('sliders')} Configure Approval Rules</a>
+            ${typeof window.fxPublishPolicy === 'function' ? FH.html`<button type="button" class="btn btn-sm" id="publish-policy-btn">Publish approval policy</button>` : ''}
           </div>
         </div>
 
@@ -14312,6 +14460,8 @@ html{scroll-behavior:smooth}
         </section>
       `);
 
+      const pubBtn = document.getElementById('publish-policy-btn');
+      if (pubBtn && typeof window.fxPublishPolicy === 'function') pubBtn.addEventListener('click', function () { window.fxPublishPolicy(); });
       main.querySelectorAll('[data-apr-act]').forEach(function (btn) {
         btn.addEventListener('click', function () {
           const aid = btn.getAttribute('data-apr-id');
@@ -14338,7 +14488,20 @@ html{scroll-behavior:smooth}
   // QUOTE RECORD (#/quotes/:id)
   // =========================================================================
 
+  function fxGuardNow() { return typeof window.__fxIssueGuard === 'function' ? window.__fxIssueGuard(true) : null; }
   function renderApprovalBannerHtml(q, rev, settings, approvalsForRev, editable) {
+    if (rev && rev.discountLegacyMissing === true) {
+      return FH.html`<div class="stack" style="gap:var(--s-2)" id="discount-missing-banner" role="alert"><div style="padding:12px 14px;border:2px solid #C8102E;border-radius:8px;color:#C8102E;font-weight:700;background:rgba(200,16,46,.06)">Not ready to send: the discount on this revision is missing (older record). Enter a reviewed discount % in the Totals section (blank is never treated as 0). Totals and approval status are not valid until then.</div></div>`;
+    }
+    const g = fxGuardNow();
+    return FH.html`<div class="stack" style="gap:var(--s-2)"><div data-fx-guardblock style="${g ? '' : 'display:none'}">${FH.ui.notice('warn', 'Cloud sending status', FH.html`<span data-fx-guardtext>${g || ''}</span>`)}</div>${renderApprovalBannerInner(q, rev, settings, approvalsForRev, editable)}</div>`;
+  }
+  window.fxRefreshGuardUi = function () {
+    const g = fxGuardNow();
+    document.querySelectorAll('[data-fx-guardblock]').forEach(function (e) { e.style.display = g ? '' : 'none'; const t = e.querySelector('[data-fx-guardtext]'); if (t) t.textContent = g || ''; });
+    document.querySelectorAll('[data-fx-def]').forEach(function (e) { e.textContent = g ? (e.getAttribute('data-fx-hide') ? '' : g) : e.getAttribute('data-fx-def'); });
+  };
+  function renderApprovalBannerInner(q, rev, settings, approvalsForRev, editable) {
     const rules = settings.approvalRules || [];
     if (rules.length === 0) {
       const existingBanner = approvalsForRev.length ? approvalsForRev.map(function (a) {
@@ -14353,7 +14516,7 @@ html{scroll-behavior:smooth}
         ${FH.ui.notice(
           rev.status === 'pending_approval' ? 'warn' : 'info',
           'Approval Rules',
-          FH.html`<span>No approval rules defined — this quote can be sent without approval. Define rules in Settings.</span>${existingBanner}`,
+          FH.html`<span data-fx-def="No approval rules defined — this quote can be sent without approval. Define rules in Settings." data-fx-hide="1">${fxGuardNow() ? '' : 'No approval rules defined — this quote can be sent without approval. Define rules in Settings.'}</span>${existingBanner}`,
           FH.html`<a href="#/settings/approvals" class="btn btn-sm">Define Rules</a>`
         )}
       </div>`;
@@ -14364,12 +14527,14 @@ html{scroll-behavior:smooth}
     const rejectedAprs = approvalsForRev.filter(function (a) { return a.status === 'rejected'; });
 
     if (triggered.length === 0 && approvalsForRev.length === 0) {
-      return FH.ui.notice('ok', 'No approval rules triggered', 'This revision satisfies all configured thresholds and can be sent without approval.');
+      return FH.ui.notice('ok', 'No approval rules triggered', FH.html`<span data-fx-def="This revision satisfies all configured thresholds and can be sent without approval." data-fx-hide="1">${fxGuardNow() ? '' : 'This revision satisfies all configured thresholds and can be sent without approval.'}</span>`);
     }
 
     const needsReq = !rev.locked && triggered.length > 0 && rev.status !== 'approved' && rev.status !== 'pending_approval';
     const tone = rejectedAprs.length ? 'danger' : (rev.status === 'approved' ? 'ok' : (pendingAprs.length || triggered.length ? 'warn' : 'info'));
-    const title = rev.status === 'approved'
+    const title = rev.locked
+      ? 'Approval Record (revision sent)'
+      : rev.status === 'approved'
       ? 'Revision Approved'
       : pendingAprs.length
         ? 'Approval Pending (' + pendingAprs.length + ')'
@@ -14404,7 +14569,13 @@ html{scroll-behavior:smooth}
   function renderTotalsHtml(q, rev, editable, canCost) {
     const totals = FH.domain.computeQuoteTotals(rev.items || [], rev.discountPct || 0);
     const discAmount = Math.max(0, totals.subtotal - totals.total);
+    const dMiss = rev.discountLegacyMissing === true;
+    if (dMiss) {
+      return FH.html`<div class="card"><div class="card-header"><h2>Quote Totals (Rev ${rev.revNo})</h2><span class="chip chip-danger">Not valid</span></div><div class="card-body"><div id="discount-missing-notice" role="alert" style="margin:0 0 12px;padding:10px 12px;border:2px solid #C8102E;border-radius:8px;color:#C8102E;font-weight:700">Discount is missing on this revision (older record). Totals are hidden and nothing can be sent or saved to the cloud until a reviewed discount % is entered. It is never assumed to be 0.</div><div class="row"><label class="muted" for="quote-discount-inp">Discount (%) required</label><span class="spacer"></span>${!rev.locked && editable ? FH.html`<input type="number" class="input mono" id="quote-discount-inp" min="0" max="100" step="0.5" value="" placeholder="required" required style="width:96px;text-align:end">` : FH.html`<span class="mono">missing</span>`}</div></div></div>`;
+    }
+    const missNotice = dMiss ? FH.html`<div class="notice notice-danger" id="discount-missing-notice" role="alert" style="margin:0 0 12px;padding:10px 12px;border:2px solid #C8102E;border-radius:8px;color:#C8102E;font-weight:700">Discount is missing on this revision (older record). The totals below are NOT valid and the revision cannot be sent or saved to the cloud until a reviewed discount % is entered. It is never assumed to be 0.</div>` : '';
     return FH.html`
+      ${missNotice}
       <div class="card">
         <div class="card-header">
           <h2>Quote Totals (Rev ${rev.revNo})</h2>
@@ -14422,7 +14593,7 @@ html{scroll-behavior:smooth}
                 <label class="muted" for="quote-discount-inp">Discount (%)</label>
                 <span class="spacer"></span>
                 ${!rev.locked && editable
-                  ? FH.html`<input type="number" class="input mono" id="quote-discount-inp" min="0" max="100" step="0.5" value="${Number(rev.discountPct || 0)}" style="width:96px;text-align:end">`
+                  ? FH.html`<input type="number" class="input mono" id="quote-discount-inp" min="0" max="100" step="0.5" value="${dMiss ? '' : Number(rev.discountPct || 0)}" ${dMiss ? FH.raw('placeholder="required" required') : ''} style="width:96px;text-align:end">`
                   : FH.html`<span class="mono">${FH.fmtNum(rev.discountPct || 0, 1)}%</span>`}
               </div>
               <div class="row text-sm">
@@ -14618,7 +14789,7 @@ html{scroll-behavior:smooth}
               <h2>Line Items by Scope (Rev ${rev.revNo})</h2>
               ${rev.locked ? FH.ui.chip('Frozen & Immutable', 'steel', 'lock') : ''}
             </div>
-            <span class="text-xs muted mono" id="quote-save-status">${rev.locked ? 'Sent ' + FH.fmtDate(rev.sentAt, true) : (editable ? 'Draft editable' : 'Read-only')}</span>
+            <span class="text-xs muted mono" id="quote-save-status">${rev.locked ? 'Sent ' + FH.fmtDate(rev.sentAt, true) : (editable ? ((window.__fxPendGet && window.__fxPendGet(q.id, rev)) ? (window.__fxPendGet(q.id, rev).issuedMine ? 'Local edits, not in the issued cloud revision' : 'Send unconfirmed, edits kept') : 'Draft editable') : 'Read-only')}</span>
           </div>
           <div class="card-body stack">
             ${rev.locked ? FH.ui.notice('info', 'Immutable Sent Revision', 'This revision was sent and locked on ' + FH.fmtDate(rev.sentAt, true) + '. Create a New Revision to modify pricing or items.') : ''}
@@ -14899,9 +15070,12 @@ html{scroll-behavior:smooth}
         </div>
       `;
 
-      const primaryActionHtml = (rev && !rev.locked && editable)
-        ? FH.html`<button type="button" class="btn btn-primary" id="send-quote-btn" ${needsApprovalBeforeSend ? FH.raw('title="Approval required before sending"') : ''}>${FH.ui.icon('lock')} Send Quote (Rev ${rev.revNo})</button>`
+      const primaryActionHtml0 = (rev && !rev.locked && editable)
+        ? FH.html`<button type="button" class="btn btn-primary" id="send-quote-btn" ${window.__fxPendGet && window.__fxPendGet(q.id, rev) ? FH.raw('data-pending="1" disabled aria-disabled="true" title="Waiting for cloud confirmation"') : ''} ${rev.discountLegacyMissing === true ? FH.raw('disabled aria-disabled="true" title="Enter a reviewed discount % first (missing on this revision)"') : ''} ${needsApprovalBeforeSend ? FH.raw('title="Approval required before sending"') : ''}>${FH.ui.icon('lock')} Send Quote (Rev ${rev.revNo})</button>`
         : (rev && rev.locked ? FH.ui.chip('Rev ' + rev.revNo + ' Locked', 'steel', 'lock') : '');
+
+      const pP = rev && window.__fxPendGet ? window.__fxPendGet(q.id, rev) : null;
+      const primaryActionHtml = FH.html`${pP ? FH.html`<div id="issue-pending-panel" class="notice" data-state="${pP.conflict ? 'conflict' : (pP.diverged ? 'diverged' : 'waiting')}" style="display:block;width:100%;box-sizing:border-box;border:2px solid ${pP.conflict ? '#c00' : '#b60'};padding:8px;border-radius:6px;margin:6px 0;max-width:420px"><strong>${pP.issuedMine ? 'Cloud already issued your send' : pP.conflict ? 'Cloud conflict: review needed' : (pP.diverged ? 'Edited while send unconfirmed' : 'Waiting for cloud confirmation')}</strong><div class="text-xs">${pP.issuedMine ? 'The cloud issued the send you requested at ' + String(pP.at).slice(11, 19) + ' UTC (confirmed by its operation id). You edited this revision afterwards. Your newer edits are kept here but are NOT in the issued revision. Review before doing anything else.' : 'This revision is NOT shown as sent. The cloud has not confirmed the send requested at ' + String(pP.at).slice(11, 19) + ' UTC.' + (pP.diverged || pP.conflict ? ' Your edits are kept. The send may still have been applied by the cloud.' : '')}</div>${window.__fxPendFail && window.__fxPendFail() ? FH.html`<div class="text-xs" id="pend-fail-line">${pP.issuedMine ? FH.html`Latest cloud check failed (reason: <bdi dir="ltr">${window.__fxPendFail().code}</bdi>). The earlier cloud confirmation still stands. Your newer edits are not in it. It retries with a growing delay.` : FH.html`Latest cloud check failed (reason: <bdi dir="ltr">${window.__fxPendFail().code}</bdi>). Send status unknown, still NOT confirmed. It retries with a growing delay.`}</div>` : ''}<button type="button" class="btn btn-sm" id="pend-check-btn">Check cloud now</button></div>` : ''}${primaryActionHtml0}`;
 
       const secondaryActionHtml = FH.html`
         ${editable ? FH.html`<button type="button" class="btn" id="hdr-new-rev-btn">${FH.ui.icon('copy')} New Revision</button>` : ''}
@@ -14915,13 +15089,13 @@ html{scroll-behavior:smooth}
         activeTab: activeTab,
         header: {
           title: q.title,
-          status: rev ? FH.ui.chip('Rev ' + rev.revNo + ': ' + quoteStatusLabel(rev.status), quoteStatusTone(rev.status), rev.locked ? 'lock' : 'quote') : '',
+          status: rev ? FH.html`${FH.ui.chip('Rev ' + rev.revNo + ': ' + quoteStatusLabel(rev.status), quoteStatusTone(rev.status), rev.locked ? 'lock' : 'quote')}${pP ? FH.ui.chip(pP.issuedMine ? 'Cloud issued, newer local edits' : 'Send unconfirmed', 'warn', 'quote') : ''}` : '',
           sampleBadge: FH.ui.sampleBadge(q),
           facts: [
             { label: 'Account', value: acc ? FH.html`<a href="#/accounts/${acc.id}">${acc.name}</a>` : '—' },
             { label: 'Opportunity', value: opp ? FH.html`<a href="#/opportunities/${opp.id}">${opp.title}</a>` : '—' },
             { label: 'Active Rev', value: rev ? ('Rev ' + rev.revNo + ' of ' + revs.length) : '—' },
-            { label: 'Total', value: rev ? FH.fmtMoney(rev.total, q.currency) : '—' },
+            { label: 'Total', value: rev ? FH.fmtMoney(rev.total, q.currency) + (rev.discountLegacyMissing === true ? ' (historical, unverified)' : '') : '—' },
             { label: 'Owner', value: userName(q.ownerId) }
           ],
           primaryAction: primaryActionHtml,
@@ -15043,6 +15217,8 @@ html{scroll-behavior:smooth}
         const discInp = document.getElementById('quote-discount-inp');
         if (!discInp || !rev || rev.locked || !editable) return;
         discInp.addEventListener('input', function () {
+          if (rev.discountLegacyMissing === true && String(discInp.value).trim() === '') return; /* blank is not a value: keep the missing state */
+          delete rev.discountLegacyMissing;
           let v = Number(discInp.value || 0);
           if (!Number.isFinite(v)) v = 0;
           v = Math.max(0, Math.min(100, v));
@@ -15182,9 +15358,11 @@ html{scroll-behavior:smooth}
       bindApprovalRequestBtn();
 
       // Send Quote button
+      { try { if (pP && pP.issuedMine && window.__fxToastClear) window.__fxToastClear(); } catch (e) {} const cb = document.getElementById('pend-check-btn'); if (cb) cb.addEventListener('click', function () { (window.__fxPendNow||window.__fxPendTick)(); FH.ui.toast('Checked the cloud. State is shown on this panel.', { tone: 'info' }); renderQuoteRecord(main, ctx); }); const xb = document.getElementById('pend-cancel-btn'); if (xb) xb.addEventListener('click', function () { const r = window.__fxPendCancel(q.id, rev.id); if (r !== 'ok') FH.ui.toast(r, { tone: 'danger' }); renderQuoteRecord(main, ctx); }); }
       const sendBtn = document.getElementById('send-quote-btn');
       if (sendBtn && rev) {
         sendBtn.addEventListener('click', async function () {
+          if (rev.discountLegacyMissing === true) { FH.ui.toast('Enter a reviewed discount % first. A missing discount is never sent as 0.', { tone: 'danger' }); return; }
           if (dirtyEdits) {
             try { await persistRevisions('quote.update', 'Saved before sending'); } catch (e) { FH.ui.toast(e.message, { tone: 'danger' }); return; }
           }
@@ -15196,7 +15374,9 @@ html{scroll-behavior:smooth}
           if (!cfm.confirmed) return;
           try {
             await FH.api.transition('quotes', q.id, 'sendRevision', { revisionId: rev.id });
-            FH.ui.toast('Rev ' + rev.revNo + ' sent and frozen.', { tone: 'ok' });
+            { const qNow = FH.store.get('quotes', q.id), rNow = qNow && (qNow.revisions || []).find(function (x) { return x.id === rev.id; });
+              if (rNow && window.__fxPendGet(q.id, rNow)) FH.ui.toast('Rev ' + rev.revNo + ' is waiting for cloud confirmation. It is NOT sent yet.', { tone: 'warn' });
+              else FH.ui.toast('Rev ' + rev.revNo + ' sent and frozen.', { tone: 'ok' }); }
             renderQuoteRecord(main, ctx);
           } catch (err) {
             FH.ui.toast(err.message || 'Cannot send quote', { tone: 'danger' });
@@ -15280,6 +15460,10 @@ html{scroll-behavior:smooth}
           const fd = new FormData(respForm);
           const outcome = String(fd.get('outcome') || 'accepted');
           const note = String(fd.get('note') || '').trim();
+          if (outcome === 'accepted' && !note && localStorage.getItem('fx:typed') === '1') {
+            FH.ui.toast('Write the customer PO or email reference in the Customer Note before recording an acceptance. Nothing was recorded.', { tone: 'danger' });
+            return;
+          }
           const now = new Date().toISOString();
           rev.customerResponse = outcome;
           rev.customerNote = note;
@@ -16658,7 +16842,7 @@ html{scroll-behavior:smooth}
         title: 'Quote: ' + q.title,
         at: (latest && latest.sentAt) || q.updatedAt || q.createdAt,
         badge: FH.ui.chip('Quote' + (latest ? ' Rev ' + latest.revNo + ' (' + latest.status + ')' : ''), 'steel', 'quote'),
-        body: 'Revisions: ' + revs.length + (latest ? ' • Total: ' + FH.fmtMoney(latest.total, q.currency) : ''),
+        body: 'Revisions: ' + revs.length + (latest ? ' • Total: ' + FH.fmtMoney(latest.total, q.currency) + (latest.discountLegacyMissing === true ? ' (historical, unverified)' : '') : ''),
         meta: 'Owner: ' + userName(q.ownerId)
       });
     });
@@ -21496,7 +21680,7 @@ html{scroll-behavior:smooth}
       lines.push('');
       lines.push('Commercial & Technical Context:');
       if (latestQuote && latestRev) {
-        lines.push('- Active Quote: ' + latestQuote.title + ' (Rev ' + latestRev.revNo + ', ' + latestRev.status + ', ' + FH.fmtMoney(latestRev.total) + ')');
+        lines.push('- Active Quote: ' + latestQuote.title + ' (Rev ' + latestRev.revNo + ', ' + latestRev.status + ', ' + FH.fmtMoney(latestRev.total) + (latestRev.discountLegacyMissing === true ? ' - historical, unverified total' : '') + ')');
       }
       if ((ctx.tenders || []).length) {
         const t = ctx.tenders[0];
@@ -21563,7 +21747,7 @@ html{scroll-behavior:smooth}
       lines.push('');
       lines.push('Thank you for your time and collaboration regarding ' + subjectRef + '.');
       if (latestQuote && latestRev) {
-        lines.push('As referenced in ' + latestQuote.title + ' (Rev ' + latestRev.revNo + ', ' + FH.fmtMoney(latestRev.total) + '), we want to ensure all technical and commercial clarifications are addressed.');
+        lines.push('As referenced in ' + latestQuote.title + ' (Rev ' + latestRev.revNo + ', ' + (latestRev.discountLegacyMissing === true ? '[TOTAL UNVERIFIED: discount missing on this revision, check before sending]' : FH.fmtMoney(latestRev.total)) + '), we want to ensure all technical and commercial clarifications are addressed.');
       }
       if (openTasks.length) {
         lines.push('');
@@ -23184,7 +23368,7 @@ mine=Object.keys(c).map(function(k){var p=CITY[k];return'<g class="fx-mine"><cir
 gg=GIGA.map(function(g){return'<g class="fx-gg"><circle class="fx-pulse" cx="'+X(g[1])+'" cy="'+Y(g[2])+'" r="5"/><path class="fx-giga" transform="translate('+X(g[1])+','+Y(g[2])+')" d="M0-6 6 0 0 6-6 0Z"><title>'+esc(g[0])+': '+esc(g[3])+'</title></path></g>'}).join('');
 return'<div><div class="fx-tg"><button class="btn" type="button" data-l="mine" aria-pressed="true">My buildings</button><button class="btn" type="button" data-l="gg" aria-pressed="true">Giga-projects</button></div><svg viewBox="0 0 520 450" role="img" aria-label="Schematic map of Saudi Arabia with project locations">'+land+mine+gg+'</svg></div><div><h3>Opportunity map</h3><p>Schematic map. Diamonds are giga-projects from public sources; circles are buildings in your data.</p><ul class="fx-ml">'+GIGA.map(function(g){return'<li><b>'+esc(g[0])+'</b><small>'+esc(g[3])+'</small></li>'}).join('')+'</ul></div>'}
 function home(){var h=location.hash.replace(/^#\/?/,'');if(h!==''&&h!=='home')return;var pc=$('.page-content');if(!pc||$('.fx-hero',pc))return;
-var hr=new Date().getHours(),gt=hr<12?'Good morning · صباح الخير':hr<18?'Good afternoon · مساء الخير':'Good evening · مساء النور',op=all('opportunities').filter(function(o){return o.stageId!=='lost'&&o.stageId!=='on_hold'}),val=op.reduce(function(s,o){return s+(+o.value||0)},0),
+var hr=new Date().getHours(),gt=hr<12?'Good morning · صباح الخير':hr<18?'Good afternoon · مساء الخير':'Good evening · مساء النور',op=all('opportunities').filter(function(o){return o.stageId!=='lost'&&o.stageId!=='on_hold'&&o.stageId!=='won'&&!o.archived}),val=op.reduce(function(s,o){return s+(+o.value||0)},0),
 st=[[all('accounts').length,'Accounts'],[all('buildings').length,'Buildings'],[op.length,'Open deals'],[val>=1e6?(val/1e6).toFixed(1)+'M':Math.round(val/1e3)+'K','Open value (SAR)']],
 hero=document.createElement('section');hero.className='fx-hero';
 hero.innerHTML='<div class="fx-top"><div><h2>'+gt+'</h2><div class="sub">Fujitec Sales Hub · Saudi market command center</div></div><div class="fx-clock"><span class="ck"></span><small class="dt"></small></div></div><div class="fx-stats">'+st.map(function(x){return'<div><b>'+x[0]+'</b><span>'+x[1]+'</span></div>'}).join('')+'</div><div class="fx-ticker" aria-live="polite"><i></i><span></span></div><div class="fx-qa"><button class="btn btn-primary" data-a="mind" type="button">Ask Fujitec Mind</button><button class="btn" data-a="size" type="button">Sizing Studio</button><button class="btn" data-a="prop" type="button">Proposal Builder</button><button class="btn" data-a="srch" type="button">Quick search</button></div>';
@@ -23341,27 +23525,328 @@ $('#lf',d).onclick=function(){var e=em();if(!e){show('Type your email above firs
 var key=function(ev){if(ev.key==='Enter')go('signInWithEmailAndPassword')};$('#lp',d).onkeydown=key;$('#lm',d).onkeydown=key;
 setTimeout(function(){var f=$('#lm',d);f&&f.focus()},60)}
 var ref=c=>db.collection('ws/main/'+c);
-function push(){if(!roleDone)return;clearTimeout(pt);pt=setTimeout(()=>{var ops=[];SYNC.forEach(c=>ST.all(c,{includeArchived:true}).forEach(r=>{var j=JSON.stringify(r),k=c+'/'+r.id;if(last[k]!==j){last[k]=j;ops.push([ref(c).doc(r.id),{j:j}])}}));
-var sj=JSON.stringify(ST.state.settings);if(last.s!==sj){last.s=sj;ops.push([db.doc('ws/main/meta/settings'),{j:sj}])}
-(function nx(i){if(i>=ops.length)return;var b=db.batch();ops.slice(i,i+400).forEach(o=>b.set(o[0],o[1]));b.commit().then(()=>nx(i+400)).catch(e=>toast('Cloud save failed: '+e.message,'danger'))})(0)},500)}
+/* v19 controlled sync: role from ws/main/roles/<email> (same doc the Security Rules use); no automatic upload of this browser's data.
+   Only records changed AFTER sign-in are pushed; sample records are never pushed; users/meta only by admin; one batch per collection so one denied write cannot block the rest.
+   Admin can upload everything on purpose with fxCloudUploadAll() (downloads a backup first). */
+var CLOUD_ROLES=['admin','manager','seller','estimator','exec'];
+function canPushColl(c){var r=(ST.getSession()||{}).role;return c==='users'?r==='admin':true}
+function baseline(){SYNC.forEach(c=>ST.all(c,{includeArchived:true}).forEach(r=>{last[c+'/'+r.id]=JSON.stringify(r)}));last.s=JSON.stringify(ST.state.settings)}
+var cloudSeen={},replaced=[],force=false,TYPED=localStorage.getItem('fx:typed')==='1',typedRev={},typedCore=null;
+var isT=function(c){return TYPED&&typedCore&&c==='opportunities'};
+var isTQ=function(c){return TYPED&&typedCore&&window.fxQuote&&c==='quotes'};
+/* v21 durable hold store (IndexedDB fx-cloudhold). Every local version about to be replaced by a cloud version, and both sides of every conflict, are saved here BEFORE anything is overwritten. */
+var holdDB=null;
+function holdOpen(){return holdDB||(holdDB=new Promise(function(res,rej){var q=indexedDB.open('fx-cloudhold',1);q.onupgradeneeded=function(){q.result.createObjectStore('held',{keyPath:'id'})};q.onsuccess=function(){res(q.result)};q.onerror=function(){holdDB=null;rej(q.error)}}))}
+function holdPut(o){o.id=o.id||('h'+Date.now().toString(36)+Math.random().toString(36).slice(2,7));o.at=o.at||new Date().toISOString();o.status='open';return holdOpen().then(function(d){return new Promise(function(res,rej){var t=d.transaction('held','readwrite');t.objectStore('held').put(o);t.oncomplete=function(){holdBadge();res(o)};t.onerror=t.onabort=function(){rej(t.error||new Error('hold write failed'))}})})}
+function holdAll(){return holdOpen().then(function(d){return new Promise(function(res,rej){var q=d.transaction('held').objectStore('held').getAll();q.onsuccess=function(){res(q.result.filter(function(x){return x.status==='open'}))};q.onerror=function(){rej(q.error)}})})}
+function holdClose(id){return holdOpen().then(function(d){return new Promise(function(res,rej){var t=d.transaction('held','readwrite'),st=t.objectStore('held'),g=st.get(id);g.onsuccess=function(){var o=g.result;if(o){o.status='resolved';st.put(o)}};t.oncomplete=function(){holdBadge();res()};t.onerror=function(){rej(t.error)}})})}
+var FXAR={'conflict':'تعارض','replaced by newer cloud version':'استُبدلت بنسخة أحدث من السحابة','This browser':'هذا المتصفح','Cloud':'السحابة','Sync review':'مراجعة المزامنة'};try{new MutationObserver(function(){if(window.holdBadge)window.holdBadge()}).observe(document.documentElement,{attributes:true,attributeFilter:['dir']})}catch(e){}
+function fxT(s){return document.documentElement.dir==='rtl'&&FXAR[s]?FXAR[s]:s}
+window.holdBadge=holdBadge;function holdBadge(){holdAll().then(function(a){var b=document.getElementById('fx-hold-btn');if(!a.length){b&&b.remove();return}
+ if(!b){b=document.body.appendChild(Object.assign(document.createElement('button'),{id:'fx-hold-btn',className:'btn btn-primary',type:'button'}));b.style.cssText='position:fixed;z-index:9000';if(!document.getElementById('fx-hold-css')){var st=document.createElement('style');st.id='fx-hold-css';st.textContent='#fx-hold-btn{left:12px;bottom:12px}:root[dir=rtl] #fx-hold-btn{left:auto;right:12px}@media(max-width:820px){#fx-hold-btn{bottom:calc(72px + env(safe-area-inset-bottom,0px))}}';document.head.appendChild(st)}b.onclick=holdReview}
+ b.textContent=fxT('Sync review')+' ('+a.length+')'}).catch(function(){})}
+function holdSave(a){var x=document.createElement('a');x.href=URL.createObjectURL(new Blob([JSON.stringify(a)],{type:'application/json'}));x.download='fujitec-sync-review-'+new Date().toISOString().slice(0,10)+'.json';document.body.appendChild(x);x.click();x.remove()}
+function holdReview(){holdAll().then(function(a){var d=document.getElementById('fx-hold-dlg');d&&d.remove();d=document.body.appendChild(Object.assign(document.createElement('div'),{id:'fx-hold-dlg'}));d.style.cssText='position:fixed;inset:0;z-index:99998;display:grid;place-items:center;background:rgba(0,0,0,.55);padding:16px';
+ var h='<div class="card" style="width:min(640px,100%);max-height:85vh;overflow:auto;padding:20px"><h2 style="margin:0 0 6px">Sync review</h2><p class="muted">These records differ between this browser and the cloud. Both versions are saved here until you choose.</p>';
+ if(!a.length)h+='<p>Nothing to review.</p>';
+ a.forEach(function(o){var mine={},th={};try{mine=JSON.parse(o.mine||JSON.stringify(o.local||{}))}catch(e){}try{th=JSON.parse(o.theirs||'{}')}catch(e){}
+  var lk=false;try{if(o.kind==='replaced')(th.revisions||[]).forEach(function(r){if(r&&r.locked===true){var mr=(mine.revisions||[]).find(function(x){return x&&x.id===r.id});if(!mr||mr.locked!==true)lk=true}})}catch(e){}
+  h+='<div class="card" style="padding:10px;margin:8px 0"><b><bdi dir="ltr">'+esc(o.key)+'</bdi></b> <span class="muted">('+(o.kind==='conflict'?fxT('conflict'):fxT('replaced by newer cloud version'))+', '+'<bdi dir="ltr">'+esc(o.at.slice(0,19).replace('T',' '))+'</bdi>'+')</span><div class="muted" style="font-size:12px;margin:4px 0">'+fxT('This browser')+': <bdi dir="ltr">'+esc(mine.updatedAt||'?')+'</bdi> | '+fxT('Cloud')+': <bdi dir="ltr">'+esc(th.updatedAt||'?')+'</bdi>'+'</div><div class="fx-qa">'+(lk?'<span class="muted" style="font-size:12px;display:block;margin-bottom:6px">The cloud already holds a sent, locked revision of this record that your earlier browser copy does not. Restoring that copy would overwrite a sent revision, so it is not offered. Use Download all as file to keep the backup.</span>':'<button class="btn btn-primary" data-r="mine" data-id="'+esc(o.id)+'" type="button">Restore my version</button>')+'<button class="btn" data-r="cloud" data-id="'+esc(o.id)+'" type="button">Keep cloud version</button></div></div>'});
+ h+='<div class="fx-qa"><button class="btn" id="fx-hd-dl" type="button">Download all as file</button><button class="btn" id="fx-hd-x" type="button">Close</button></div></div>';d.innerHTML=h;
+ d.querySelector('#fx-hd-x').onclick=function(){d.remove()};d.querySelector('#fx-hd-dl').onclick=function(){holdSave(a)};
+ d.querySelectorAll('[data-r]').forEach(function(b){b.onclick=function(){var o=a.filter(function(x){return x.id===b.dataset.id})[0];if(!o)return;
+  if(b.dataset.r==='mine'){var m=JSON.parse(o.mine||JSON.stringify(o.local)),p=o.key.split('/'),c=p[0],arr=ST.state[c],i=arr.findIndex(function(y){return y.id===m.id});m.updatedAt=new Date().toISOString();i>=0?arr[i]=m:arr.push(m);if(o.theirs)cloudSeen[o.key]=o.theirs;if(isT(o.key.split('/')[0]))typedRev[o.key]=(o.theirsRev!=null?o.theirsRev:-1);if(isTQ(o.key.split('/')[0]))tqSetPins(o.key.split('/')[1],o.theirsPins||{});delete last[o.key];ST.flush();push();fresh()}
+  holdClose(o.id).then(function(){holdReview()},function(){toast('Could not update the review list.','danger')})}})})}
+window.fxHoldReview=holdReview;
+window.fxCloudConflicts=[];
+
+/* v22 typed quotes: header + per-revision docs + acceptance events. cl = latest cloud docs; bp = the revs THIS browser's copy is based on (moved only when cloud is applied locally or after our own commit). */
+var tq={aprBusy:{},hdr:{},revs:{},evs:{},bp:{},ready:0};
+var skk=function(v){return Array.isArray(v)?v.map(skk):(v&&typeof v==='object')?Object.keys(v).sort().reduce(function(o,k){o[k]=skk(v[k]);return o},{}):v};
+var tqEq=function(a,b){return JSON.stringify(skk(a))===JSON.stringify(skk(b))};
+function tqRevsOf(q){return Object.keys(tq.revs).map(function(k){return tq.revs[k]}).filter(function(r){return r.quoteId===q})}
+function tqEvsOf(q){return Object.keys(tq.evs).map(function(k){return tq.evs[k]}).filter(function(e){return e.revisionId.indexOf(q+'__')===0})}
+function tqProject(q,loc){var h=tq.hdr[q];if(!h)return null;return fxQuote.project({j:h.j},tqRevsOf(q),tqEvsOf(q),loc||null)}
+function tqPins(q){var p={};if(tq.hdr[q])p['quotes/'+q]=tq.hdr[q].rev;tqRevsOf(q).forEach(function(r){p['quotationRevisions/'+r.id]=r.rev});return p}
+function tqSetPins(q,pins){Object.keys(tq.bp).forEach(function(k){if(k==='quotes/'+q||k.indexOf('quotationRevisions/'+q+'__')===0)delete tq.bp[k]});Object.assign(tq.bp,pins||{})}
+/*FXT3*/
+function tqSync(q){var k='quotes/'+q,a=ST.state.quotes,i=a.findIndex(function(y){return y.id===q}),loc=i>=0?a[i]:null;if(tq.ready<3||!tq.hdr[q])return;
+ var merged=tqProject(q,loc),pins=tqPins(q),mj=JSON.stringify(merged),apply=function(){var arr=ST.state.quotes,j=arr.findIndex(function(y){return y.id===q});j<0?arr.push(merged):arr[j]=merged;tqSetPins(q,pins);last[k]=mj;ST.flush();fresh()};
+ if(!loc){apply();return}
+ /* cloud docs are overlaid on the local quote; local-only revisions are never dropped, so a partial snapshot cannot lose array items */
+ if(tqEq(merged,loc)){var cover=loc.revisions.every(function(r){return !!tq.revs[fxQuote.revId(q,r.revNo)]});if(cover&&last[k]===JSON.stringify(loc))tqSetPins(q,pins);return}
+ var newer=Object.keys(pins).some(function(d){return pins[d]>(tq.bp[d]==null?0:tq.bp[d])}); /* cloud docs newer than what this copy is based on */
+ if(!newer)return; /* cloud is not newer (e.g. our own commit is still in flight): never replace local with an older or equal cloud state */
+ if(last[k]!==JSON.stringify(loc))return; /* unpushed local edits: keep them; the push will see a stale base and hold both */
+ holdPut({kind:'replaced',key:k,mine:JSON.stringify(loc),theirs:mj,theirsPins:pins}).then(apply,function(e){toast('Could not save your local quote before applying the cloud version, so NOTHING was replaced.','danger')})}
+function mCanon(v){if(v===null||typeof v!=='object')return JSON.stringify(v===undefined?null:v);if(Array.isArray(v))return '['+v.map(mCanon).join(',')+']';return '{'+Object.keys(v).sort().map(function(k){return JSON.stringify(k)+':'+mCanon(v[k])}).join(',')+'}'}
+function mEq(a,b){return mCanon(a||{})===mCanon(b||{})}
+/* Cloud-first issue (pivot): the pending send intent lives in its OWN durable store (tqPendMap, mirrored to IndexedDB and localStorage), never inside the quote document, so merges of cloud data cannot drop it. The quote in the app store stays a draft until an authoritative server snapshot shows an issued revision whose opId equals this pending operation. */
+var tqSrvAt={},tqPendMap={},tqIdbReady=false,tqDurOk={};
+try{Object.assign(tqPendMap,JSON.parse(localStorage.getItem('fx:issuePending')||'{}'));Object.keys(tqPendMap).forEach(function(t){tqDurOk[t]=true})}catch(e){}
+function tqIdb(cb){try{var o=indexedDB.open('fx-issue-pending',1);o.onupgradeneeded=function(){o.result.createObjectStore('p')};o.onsuccess=function(){try{cb(o.result)}catch(e){}};o.onerror=function(){}}catch(e){}}
+tqIdb(function(db){var m={},tx=db.transaction('p','readonly'),rq=tx.objectStore('p').openCursor();rq.onsuccess=function(){var c=rq.result;if(c){m[c.key]=c.value;c.continue()}else{Object.keys(m).forEach(function(t){if(!tqPendMap[t]){tqPendMap[t]=m[t];tqDurOk[t]=true}});tqIdbReady=true;try{fresh()}catch(e){}}}});
+function tqIdbPut(k,v){if(v!==null)tqDurOk[k]=false;tqIdb(function(db){var tx=db.transaction('p','readwrite');if(v===null)tx.objectStore('p').delete(k);else tx.objectStore('p').put(v,k);tx.oncomplete=function(){if(v!==null){tqDurOk[k]=true;setTimeout(function(){try{window.__fxPendTick&&window.__fxPendTick()}catch(e){}},0)}}})}
+function tqCurUid(){try{return (firebase.auth().currentUser||{}).uid||null}catch(e){return null}}
+function tqPendGet(qid,revNo){var p=tqPendMap[fxQuote.revId(qid,revNo)]||null,cu=tqCurUid();if(p&&cu&&p.uid&&p.uid!==cu)return null;return p}
+window.__fxPendGet=function(qid,rev){return rev?tqPendGet(qid,rev.revNo):null};
+function tqLsWrite(tid,p){var m={};try{m=JSON.parse(localStorage.getItem('fx:issuePending')||'{}')}catch(e){}if(p)m[tid]=p;else delete m[tid];try{localStorage.setItem('fx:issuePending',JSON.stringify(m))}catch(e){}}
+function tqPendSave(p){var ex=tqPendMap[p.tid];if(ex&&(ex.uid!==p.uid||ex.ws!==p.ws||ex.op!==p.op)){return false}tqPendMap[p.tid]=p;tqIdbPut(p.tid,p);tqLsWrite(p.tid,p)}
+function tqPendDrop(tid){var ex=tqPendMap[tid];if(ex&&ex.uid&&ex.uid!==tqCurUid())return;delete tqPendMap[tid];tqDurOk[tid]=false;tqIdbPut(tid,null);tqLsWrite(tid,null)}
+function tqSentCopy(r,p){var c=JSON.parse(JSON.stringify(r));c.status='sent';c.locked=true;c.sentAt=p.at;c.statusHistory=(c.statusHistory||[]).concat([{at:p.at,status:'sent',by:p.by,note:'Sent and frozen as immutable revision'}]);return c}
+function tqPendingMatches(q,r,p){var tid=fxQuote.revId(q.id,r.revNo),d;try{d=fxQuote.split(JSON.parse(JSON.stringify(q)),{}).revisions.find(function(z){return z.id===tid})}catch(e){return false}return !!d&&d.j===p.j&&d.dp===p.dp}
+function tqKnown(){var known={};Object.keys(tq.revs).forEach(function(i){known[i]=JSON.stringify(fxQuote.merge(tq.revs[i]))});return known}
+window.__fxMakePending=function(rec,revisionId,by){if(!typedCore||!rec)return null;var r=(rec.revisions||[]).find(function(x){return x.id===revisionId});if(!r)return null;var tid=fxQuote.revId(rec.id,r.revNo),c=tq.revs[tid];if(!c||c.docStatus!=='draft')return null;var doc;try{doc=fxQuote.split(JSON.parse(JSON.stringify(rec)),{}).revisions.find(function(d){return d.id===tid})}catch(e){return null}if(!doc)return null;var g=tqApr[tid],at=new Date().toISOString(),p={uid:tqCurUid(),ws:'ws/typed',tid:tid,quoteId:rec.id,revId:r.id,baseRev:c.rev||0,gate:g?{status:g.status,revJ:g.revJ,revDp:g.revDp}:null,at:at,by:by,j:doc.j,dp:doc.dp,ops:[]};
+ /* the exact commit operation this send will produce; its id is what the cloud document must carry for an ack */
+ try{var v=JSON.parse(JSON.stringify(rec));v.revisions=v.revisions.map(function(x){return x.id===revisionId?tqSentCopy(x,p):x});var sp=fxQuote.split(v,tqKnown()),r2=sp.revisions.find(function(d){return d.id===tid}),pn=tq.bp['quotationRevisions/'+tid];p.op=fxTyped.opHash({coll:'quotationRevisions',id:tid,base:pn==null?-1:pn,patch:{j:r2.j,m:r2.m,dp:r2.dp,docStatus:r2.docStatus,quoteId:r2.quoteId,revNo:r2.revNo}})}catch(e){return null}
+ if(tqPendSave(p)===false)throw new Error('Another unresolved send request exists for this revision (different user, workspace or operation). Nothing was sent. Resolve it first.');return p};
+function tqPendFlag(qid,tid,key,msg){var p=tqPendMap[tid];if(!p||p[key])return;p[key]=true;tqPendSave(p);try{fresh()}catch(e){}toast(msg,'danger')}
+function tqIssueView(q){if(!(q.revisions||[]).some(function(r){return r&&tqPendGet(q.id,r.revNo)}))return q;var v=JSON.parse(JSON.stringify(q));v.revisions=v.revisions.map(function(r){var tid=fxQuote.revId(q.id,r.revNo),p=tqPendGet(q.id,r.revNo);if(!p)return r;if(p.diverged||p.conflict||!(tq.revs[tid]&&tq.revs[tid].docStatus==='draft')||tqDurOk[tid]!==true||!tqPendingMatches(q,r,p))return r;return tqSentCopy(r,p)});return v}
+function tqPendClear(qid,tid,msg,op){var p=tqPendMap[tid];if(!p)return;if(p.uid&&p.uid!==tqCurUid())return;if(op&&p.op!==op){console.warn('stale refusal ignored: op mismatch');return}if(op){var cc=tq.revs[tid];if(!cc||cc.docStatus!=='draft'){console.warn('refusal not cleared: cloud revision is not a draft, reconcile decides');return}}tqPendDrop(tid);try{fresh()}catch(e){}toast(msg,'danger')}
+function tqPendAck(qid,tid){var p=tqPendMap[tid],cur=ST.get('quotes',qid);if(!p||!cur)return;var rs=JSON.parse(JSON.stringify(cur.revisions)),i=rs.findIndex(function(y){return fxQuote.revId(qid,y.revNo)===tid});if(i<0)return;rs[i]=tqSentCopy(rs[i],p);tqPendDrop(tid);ST.update('quotes',qid,{revisions:rs},{action:'quote.send',reason:'cloud confirmed operation '+p.op});try{fresh()}catch(e){}toast('Rev '+rs[i].revNo+' sent and frozen (cloud confirmed).','ok')}
+var tqPendFail={code:'',n:0};function tqPendFailSet(e){tqPendFail={code:tqCat(e&&e.code),n:tqPendFail.n+1}}
+function tqCat(c){var raw=String(c||'').toLowerCase();return /unavailable|deadline|network|offline|cancel|connection/.test(raw)?'network':/permission|unauth/.test(raw)?'permission':/resource-exhausted|quota/.test(raw)?'busy':'unknown'}
+window.__fxToastClear=function(){try{Array.prototype.slice.call(document.querySelectorAll('#toasts .toast')).forEach(function(t){if(/did not CONFIRM|may or may not|waiting for cloud confirmation|NOT shown as sent|not saved to the cloud/.test(t.textContent))t.remove()})}catch(e){}};
+function tqPendBackoff(){var n=tqPendFail.n;return n?Math.min(60000,5000*Math.pow(2,Math.min(n,4))):4000}
+window.__fxPendNow=function(){for(var k in tqSrvAt)delete tqSrvAt[k];window.__fxPendTick()};
+window.__fxPendFail=function(){return tqPendFail.n>0?{code:tqPendFail.code,n:tqPendFail.n}:null};/* read-only: fixed category (network, permission, busy, unknown) and count; provider text is never kept */
+window.__fxPendTick=function(){try{if(!typedCore||!tqIdbReady||tq.infl>0)return;var cu=tqCurUid();if(!cu)return;
+ Object.keys(tqPendMap).forEach(function(tid){var P=tqPendMap[tid];if(!P||P.uid!==cu||P.ws!=='ws/typed')return;var q=ST.get('quotes',P.quoteId);if(!q)return;var r=(q.revisions||[]).find(function(x){return fxQuote.revId(q.id,x.revNo)===tid});if(!r)return;var c=tq.revs[tid];if(!c)return;
+  if(!c.auth){ /* a cached snapshot is not authoritative: ask the server directly */
+   if(navigator.onLine!==false&&!(tqSrvAt[tid]>Date.now()-tqPendBackoff())){tqSrvAt[tid]=Date.now();db.doc('ws/typed/quotationRevisions/'+tid).get({source:'server'}).then(function(d){tqPendFail={code:'',n:0};if(!d.exists)return;var x=d.data(),cur=tq.revs[tid];if(!cur||(cur.rev||0)>(x.rev||0))return;tq.revs[tid]={id:tid,quoteId:x.quoteId,revNo:x.revNo,j:x.j,m:x.m,dp:x.dp,docStatus:x.docStatus,rev:x.rev,opId:x.opId,fc:false,hpw:false,auth:true,srv:true};setTimeout(function(){window.__fxPendTick()},0)},function(e){tqPendFailSet(e)})}
+   return}
+  var sameC=c.j===P.j&&c.dp===P.dp,mine=!!c.opId&&(c.opId===P.op||(P.ops||[]).indexOf(c.opId)>=0);
+  if(c.docStatus==='issued'){
+   if(mine&&sameC){if(r.status!=='sent'&&!tqPendingMatches(q,r,P)){P.issuedMine=true;tqPendSave(P);window.__fxToastClear()}if(r.status==='sent'){tqPendDrop(tid);try{fresh()}catch(e){}}else if(tqPendingMatches(q,r,P))tqPendAck(q.id,tid);else tqPendFlag(q.id,tid,'conflict','Rev '+r.revNo+' WAS issued by the cloud as the send you submitted, but you also edited it afterwards. Both versions are kept. Review before doing anything else.')}
+   else if(sameC)tqPendFlag(q.id,tid,'conflict','Rev '+r.revNo+' is issued in the cloud with the same content, but by a different operation than your send. It is not treated as your send. Review.');
+   else tqPendFlag(q.id,tid,'conflict','The cloud holds different issued content for Rev '+r.revNo+' than the send you submitted. Nothing is cleared. Review the cloud version and your pending send.');
+   return}
+  if(P.diverged||P.conflict)return;
+  if(!tqPendingMatches(q,r,P)){tqPendFlag(q.id,tid,'diverged','You edited Rev '+r.revNo+' while its send was unconfirmed. The send is no longer retried and your edits are kept. The cloud may or may not have issued it, so it is still reconciled against the cloud.');return}
+  if(c.docStatus==='draft'&&c.rev!==P.baseRev&&!sameC){tqPendFlag(q.id,tid,'conflict','The cloud revision changed after you pressed Send. The send is paused and not retried. Review before sending again.');return}
+  if(tqDurOk[tid]===true&&navigator.onLine!==false)tqWrite([q])})}catch(e){tqPendFailSet(e)}};
+setInterval(window.__fxPendTick,5000);
+function tqWrite(list){list.forEach(function(q){var opAt={};(q.revisions||[]).forEach(function(r){var tid=fxQuote.revId(q.id,r.revNo),p=r&&tqPendGet(q.id,r.revNo);if(p&&(tq.revs[tid]||{}).docStatus==='draft'&&tqDurOk[tid]===true&&!p.diverged&&!p.conflict)opAt[tid]=p.op});var k='quotes/'+q.id,known={};Object.keys(tq.revs).forEach(function(i){known[i]=JSON.stringify(fxQuote.merge(tq.revs[i]))});var sp;
+  try{sp=fxQuote.split(tqIssueView(q),known)}catch(e){toast('Quote '+q.id+' not synced: '+e.message,'danger');return}
+  /* idempotent: a response identical to the latest recorded one (same type and basis) adds no duplicate event */
+  sp.events=sp.events.filter(function(e){var best=null;Object.keys(tq.evs||{}).forEach(function(d){var v=tq.evs[d];if(v&&v.revisionId===e.revisionId&&(!best||(v.n||0)>=(best.n||0)))best=v});return !(best&&best.type===e.type&&String(best.basis||'')===String(e.basis||''))});
+  var ops=[],mig=[],cflt=null,hc=tq.hdr[q.id],hp=tq.bp['quotes/'+q.id];
+  if(hp==null){if(hc)cflt='quote exists in cloud';else ops.push({coll:'quotes',id:q.id,base:null,patch:{j:sp.header.j}})}
+  else if(!hc||hc.j!==sp.header.j)ops.push({coll:'quotes',id:q.id,base:hp,patch:{j:sp.header.j}});
+  sp.revisions.forEach(function(r){var c=tq.revs[r.id],pn=tq.bp['quotationRevisions/'+r.id];
+   if(!c){if(r.docStatus==='issued'){mig.push(r.id);return}ops.push({coll:'quotationRevisions',id:r.id,base:null,patch:{j:r.j,m:r.m,dp:r.dp,docStatus:r.docStatus,quoteId:r.quoteId,revNo:r.revNo}});return}
+   if(c.j===r.j&&c.dp===r.dp&&mEq(c.m,r.m)&&c.docStatus===r.docStatus)return;
+   if(c.docStatus==='issued'){cflt='issued revision '+r.id+' is immutable in the cloud';return}
+   ops.push({coll:'quotationRevisions',id:r.id,base:pn==null?-1:pn,patch:{j:r.j,m:r.m,dp:r.dp,docStatus:r.docStatus,quoteId:r.quoteId,revNo:r.revNo}})});
+  var issuingNow=sp.revisions.some(function(r){return r.docStatus==='issued'&&tq.revs[r.id]&&tq.revs[r.id].docStatus==='draft'});
+  if(issuingNow&&(tq.pol===undefined||(tq.pol&&tq.pol.rulesConfigured===true))){if(!tq.polWarned||tq.polWarned!==q.id){tq.polWarned=q.id;toast('Cloud issue is disabled while approval rules are configured (interim, the server cannot yet check which approvers the rules require). This quote is sent on this browser only and was NOT issued in the cloud.','warn')}return}
+  if(mig.length){toast('Quote '+q.id+' has already-sent revisions that are not in the typed cloud store. Saved on this browser only until the migration step exists.','warn');return}
+  var hold=function(why){delete last[k];var th=tqProject(q.id,null);holdPut({kind:'conflict',key:k,mine:JSON.stringify(q),theirs:th?JSON.stringify(th):'{}',theirsPins:tqPins(q.id),reason:why}).then(function(){toast('Quote '+q.id+' not saved to the cloud (reason: '+(/changed or refused|conflict/i.test(String(why))?'conflict':tqCat(why))+'). Both versions are kept. Open Sync review.','danger')},function(){toast('Quote '+q.id+' could NOT be held safely. Your version stays in this browser.','danger')})};
+  if(cflt){hold(cflt);return}
+  if(!ops.length&&!sp.events.length)return;
+  var issuing=sp.revisions.filter(function(r){return r.docStatus==='issued'&&tq.revs[r.id]&&tq.revs[r.id].docStatus==='draft'});
+  /* an issue relies on the recorded approval; if the approval decision is still in flight, wait for it (bounded) instead of racing into a refusal */
+  var waitApr=function(){if(!issuing.length)return Promise.resolve();var t0=Date.now();return new Promise(function(res){(function chk(){tqApprMirror();var ok=issuing.every(function(r){var g=tqApr[r.id],c=tq.revs[r.id];return !g||g.status!=='pending'||(c&&(g.revJ!==c.j||g.revDp!==c.dp))});if(ok||Date.now()-t0>4000)res();else setTimeout(chk,250)})()})};
+  var run=waitApr().then(function(){if(!ops.length)return undefined;ops.forEach(function(o){var pp=tqPendMap[o.id];if(pp&&o.patch.docStatus==='issued'&&(pp.ops||[]).indexOf(o.opId)<0){pp.ops=(pp.ops||[]).concat(o.opId);tqPendSave(pp)}});tq.infl=(tq.infl||0)+1;return typedCore.commit(ops).then(function(v){tq.infl--;setTimeout(function(){try{tqApprMirror()}catch(e){}},30);return v},function(e){tq.infl--;throw e})});
+  run.then(function(){ops.forEach(function(o){tq.bp[o.coll+'/'+o.id]=o.base==null?1:o.base+1});
+   /* ack only from an authoritative server snapshot via the reconcile tick */
+   return Promise.all(sp.events.map(function(e){return typedCore.accept(e.revisionId,Date.now(),e.basis,e.type)}))}).catch(function(e){var __d0=e&&(e.code==='permission-denied'||e.code==='fx/conflict'||e.code==='fx/too-large'||e.code==='failed-precondition'),__p0=issuing.filter(function(r){return !!tqPendMap[r.id]&&!!opAt[r.id]});if(!(__p0.length&&!__d0))hold((e&&(e.code==='fx/conflict'?'cloud changed or refused: '+(e.doc||''):e.code==='fx/too-large'?'this quote has too many revisions to save in one step (limit about 15); it stays on this browser':e.code))||'error');
+   /* the cloud refused or could not confirm an ISSUE: this browser must not keep showing the revision as sent. The held copy keeps the sent version; the live copy goes back to the cloud's workflow state. */
+   var definite=e&&(e.code==='permission-denied'||e.code==='fx/conflict'||e.code==='fx/too-large'||e.code==='failed-precondition'||e.code==='aborted'&&false);
+   var pend=issuing.filter(function(r){return !!tqPendMap[r.id]&&!!opAt[r.id]});
+   if(pend.length&&definite){pend.forEach(function(r){tqPendClear(q.id,r.id,'Quote '+q.id+' was NOT sent: the cloud refused the issue. Your edits are unchanged.',opAt[r.id])})}
+   if(pend.length&&!definite){toast('Rev is waiting for cloud confirmation (reason: '+tqCat(e&&e.code)+'). It is NOT shown as sent. The app will check the cloud and retry the same send.','warn')}
+   issuing=issuing.filter(function(r){return pend.indexOf(r)<0});
+   if(issuing.length&&!definite){toast('Quote '+q.id+': the cloud did not CONFIRM the send (reason: '+tqCat(e&&e.code)+'). It may or may not have been issued. Do not resend until Sync review shows the cloud state; this browser still shows it as sent but unconfirmed.','danger')}
+   if(issuing.length&&definite){try{issuing.forEach(function(r){var c=tq.revs[r.id],cm=(c&&c.m&&(typeof c.m==='string'?JSON.parse(c.m):c.m))||{},cur=ST.get('quotes',q.id);if(!cur)return;var rs=JSON.parse(JSON.stringify(cur.revisions)),x=rs.find(function(y){return fxQuote.revId(q.id,y.revNo)===r.id});if(!x)return;x.status=cm.status||'draft';x.locked=false;x.sentAt=cm.sentAt||'';x.statusHistory=cm.statusHistory||[];ST.update('quotes',q.id,{revisions:rs},{action:'quote.send.reverted',reason:'cloud did not issue this revision'});toast('Quote '+q.id+' was NOT sent: the cloud did not accept the issue. It is back to its previous state on this browser.','danger')})}catch(x2){console.warn('revert failed',x2)}}})})}
+var tqApr={};
+/* INTERIM disabled capability: while approval rules are configured the server cannot derive which groups they require, so cloud issue is closed. The admin mirrors the local rule count to policy.rulesConfigured. Missing policy is never treated as rules-empty. */
+window.__fxIssueGuard=function(banner){var m=window.__fxIssueGuardMsg();return m&&banner?m.replace(' Nothing was sent. Try again',' Try again').replace(' Nothing was sent.',''):m};
+/* Send consistency: BEFORE the local revision is marked sent, the cloud copy must already hold exactly these pricing values (j and dp) and any recorded approval must be bound to them. Otherwise the cloud would refuse the issue and this browser would show a quote as sent that is not. */
+window.__fxSendConsistency=function(rec,revisionId){if(!typedCore||!rec)return null;if(typeof navigator!=='undefined'&&navigator.onLine===false)return 'This browser is offline. A quote is only marked sent once the cloud confirms it, so nothing was sent. Reconnect and try again.';var r=(rec.revisions||[]).find(function(x){return x.id===revisionId});if(!r)return null;var tid=fxQuote.revId(rec.id,r.revNo),c=tq.revs[tid];if(!c)return null;
+ var doc;try{var sp=fxQuote.split(JSON.parse(JSON.stringify(rec)),{});doc=sp.revisions.find(function(d){return d.id===tid})}catch(e){return 'This revision cannot be saved to the cloud yet: '+((e&&e.message)||'invalid data')+' Nothing was sent.'}
+ if(!doc)return null;if(doc.j!==c.j||doc.dp!==c.dp)return 'Your latest edits are not in the cloud yet (or the cloud copy differs). Nothing was sent. Wait a moment, check Sync review, and try again.';
+ tqApprMirror();var g=tqApr[tid];if(g&&(g.revJ!==c.j||g.revDp!==c.dp))return 'The recorded approval is for different pricing than this revision. Request approval again. Nothing was sent.';return null};
+window.__fxIssueGuardMsg=function(){if(!typedCore)return null; /* no cloud session: local-only, nothing to guard */
+ if(tq.pol===undefined)return 'The cloud approval policy has not loaded yet. Nothing was sent. Try again in a moment.';
+ if(tq.pol===null)return 'No cloud approval policy has been published. An admin must publish it before quotes can be sent in cloud mode. Nothing was sent.';
+ if(tq.pol.rulesConfigured===true)return 'Sending is disabled in cloud mode while approval rules are configured (interim: the server cannot yet check which approvers the rules require). Nothing was sent.';
+ return null};
+/* hardening: the send-safety hooks cannot be replaced from the console or by other scripts */
+;['__fxIssueGuard','__fxIssueGuardMsg','__fxSendConsistency','__fxPendGet','__fxMakePending','__fxPendNow','__fxPendFail','__fxPendTick','__fxToastClear'].forEach(function(n){try{var v=window[n];if(typeof v==='function')Object.defineProperty(window,n,{value:v,writable:false,configurable:false,enumerable:true})}catch(e){}});
+/* Deliberate, versioned admin action. Local settings never write the policy on their own. */
+window.fxPublishPolicy=async function(){var u=FH.currentUser();if(!typedCore||!u||u.role!=='admin'){toast('Only an admin signed in to the cloud can publish the approval policy.','danger');return}
+ var n=((FH.store.getSettings()||{}).approvalRules||[]).length,cur=(tq.pol&&tq.pol.ver)||0;
+ var c=await FH.ui.confirm({title:'Publish approval policy to the cloud?',message:document.documentElement.dir==='rtl'?(n>0?('القواعد المضبوطة محليًا: '+n+' قاعدة موافقة. النشر يجعل السياسة السحابية "قواعد مضبوطة"، لذلك يتعطل إرسال العروض في الوضع السحابي (مؤقت) حتى يتمكن الخادم من فحص القواعد. إصدار السياسة السحابية الحالي: '+cur+'.'):('لا توجد قواعد موافقة مضبوطة محليًا. النشر يجعل السياسة السحابية "بلا قواعد". إصدار السياسة السحابية الحالي: '+cur+'.')):n>0?('This browser has '+n+' approval rule(s). Publishing marks the cloud policy as rules-configured, so sending quotes in cloud mode is DISABLED (interim) until the server can check the rules. Current cloud policy version: '+cur+'.'):('This browser has no approval rules. Publishing marks the cloud policy as rules-empty. Current cloud policy version: '+cur+'.'),confirmText:'Publish'});
+ if(!c||!c.confirmed)return;
+ try{await typedCore.setPolicy(n===0,undefined,n>0,cur);toast('Approval policy published (version '+(cur+1)+').','ok')}catch(e){toast(e&&e.code==='fx/stale-policy'?'The cloud policy changed since you loaded it. Nothing was published. Reload and review before publishing again.':'Could not publish the approval policy ('+((e&&(e.code||e.message))||'error')+').','danger')}};
+function tqPolListen(){db.doc('ws/typed/policy/approval').onSnapshot(function(s){tq.pol=s.exists?s.data():null;try{window.fxRefreshGuardUi&&window.fxRefreshGuardUi()}catch(e){}},function(e){console.warn('typed policy: '+e.code)})}
+function tqApprWarn(e){toast('Approval not synced to the cloud: '+((e&&(e.code||e.message))||'error')+'. Your approval stays on this browser; the quote cannot be issued in the cloud until it is recorded.','danger')}
+function tqApprMirror(){var qs=ST.state.quotes||[],aps=ST.state.approvals||[];aps.forEach(function(a){if(a.kind!=='quote'||!a.revisionId||!a.entityId)return;
+  var q=qs.find(function(x){return x.id===a.entityId});if(!q)return;var r=(q.revisions||[]).find(function(x){return x.id===a.revisionId});if(!r)return;
+  var tid=fxQuote.revId(q.id,r.revNo),c=tq.revs[tid],g=tqApr[tid],grp=a.requiredRole||'manager';if(!c||c.docStatus!=='draft')return;
+  if(grp!=='manager'&&grp!=='admin'){var kk='bad|'+a.id;if(!tq.aprBusy[kk]){tq.aprBusy[kk]=1;toast('Approval group "'+grp+'" is not supported by the cloud gate (only manager and admin). This quote cannot be issued in the cloud.','danger')}return}
+  var k=tid+'|'+a.id+'|'+a.status+'|'+(c.j.length);if(tq.aprBusy[k])return;if(tq.infl>0)return;
+  if(a.status==='pending'){if(g&&g.revJ===c.j&&g.revDp===c.dp&&g.status!=='rejected'){ if((g.groups||[]).indexOf(grp)>=0)return }
+    var groups=[];aps.forEach(function(x){if(x.kind==='quote'&&x.revisionId===a.revisionId&&x.entityId===a.entityId&&x.status!=='archived'){var y=x.requiredRole||'manager';if((y==='manager'||y==='admin')&&groups.indexOf(y)<0)groups.push(y)}});
+    if(g&&g.revJ===c.j&&g.revDp===c.dp&&g.status==='pending')return; tq.aprBusy[k]=1;typedCore.requestApproval(tid,c.rev,c.j,groups,c.dp).catch(function(e){delete tq.aprBusy[k];tq.aprRetry=tq.aprRetry||{};if(!tq.aprRetry[k]){tq.aprRetry[k]=1;setTimeout(function(){try{tqApprMirror()}catch(x){}},1200);return}tqApprWarn(e)})}
+  else if((a.status==='approved'||a.status==='rejected')&&g&&g.status==='pending'&&g.revJ===c.j&&g.revDp===c.dp&&!(g.decisions&&g.decisions[grp])&&(g.groups||[]).indexOf(grp)>=0){tq.aprBusy[k]=1;typedCore.decide(tid,c.rev,a.status,grp).catch(function(e){delete tq.aprBusy[k];tqApprWarn(e)})}})}
+/*FXT1*//*FXT2*/
+function tqApprListen(){tqPolListen();db.collection('ws/typed/approvals').onSnapshot(function(s){s.docChanges().forEach(function(x){if(x.type==='removed'){delete tqApr[x.doc.id];return}tqApr[x.doc.id]=x.doc.data()});tqApprMirror()},function(e){console.warn('typed approvals: '+e.code)})}
+function tqListen(){tqApprListen();['quotes','quotationRevisions','quoteEvents'].forEach(function(c){var first=true;db.collection('ws/typed/'+c).onSnapshot(c==='quotationRevisions'?{includeMetadataChanges:true}:{},function(s){var qs={};
+  s.docChanges(c==='quotationRevisions'?{includeMetadataChanges:true}:undefined).forEach(function(x){if(x.type==='removed')return;var d=x.doc.data(),id=x.doc.id;
+   if(c==='quotes'){tq.hdr[id]={j:d.j,rev:d.rev};qs[id]=1}
+   else if(c==='quotationRevisions'){tq.revs[id]={id:id,quoteId:d.quoteId,revNo:d.revNo,j:d.j,m:d.m,dp:d.dp,docStatus:d.docStatus,rev:d.rev,opId:d.opId,fc:s.metadata.fromCache,hpw:x.doc.metadata.hasPendingWrites,auth:!(x.doc.metadata.hasPendingWrites||s.metadata.fromCache)};qs[d.quoteId]=1}
+   else{tq.evs[id]={revisionId:d.revisionId,type:d.type,basis:d.basis,n:Number(String(id).split('__').pop())||0};qs[d.revisionId.split('__')[0]]=1}});
+  if(first){first=false;tq.ready++}
+  if(tq.ready>=3)Object.keys(qs).forEach(tqSync);
+  if(tq.ready===3&&!tq.done){tq.done=1;Object.keys(tq.hdr).forEach(tqSync)}},function(e){console.warn('typed '+c+': '+e.code)})})}
+function writeDocs(c,ops){ /* ops: [docRef, json, key] */
+ if(c==='approvals'){setTimeout(function(){try{tqApprMirror()}catch(e){}},60);setTimeout(function(){try{tqApprMirror()}catch(e){}},1500)}
+ if(isTQ(c)){tqWrite(ops.map(function(o){return JSON.parse(o[1])}));return}
+ if(isT(c)){ops.forEach(function(o){var id=o[0].id,base=typedRev[o[2]],isNew=(base==null);
+   var p=isNew?typedCore.create(c,id,{j:o[1]}):typedCore.update(c,id,base,{j:o[1]});
+   p.then(function(){typedRev[o[2]]=isNew?1:base+1;cloudSeen[o[2]]=o[1]}).catch(function(e){delete last[o[2]];
+    var known=e&&(e.code==='fx/conflict'||e.code==='permission-denied'||e.code==='aborted'||e.code==='failed-precondition');
+    if(!known){toast('Cloud save failed ('+c+', reason: '+tqCat(e)+'). Your version stays in this browser.','danger');return}
+    db.doc('ws/typed/'+o[2]).get().then(function(d){var th=d.exists?d.data().j:null,rv=d.exists?d.data().rev:null;
+     if(th===null){toast('Cloud refused this save ('+(e.code||'error')+'). Your version stays in this browser.','danger');return}
+     if(th===o[1]){cloudSeen[o[2]]=th;typedRev[o[2]]=rv;return}
+     window.fxCloudConflicts.push({key:o[2],mine:o[1],cloud:th});
+     holdPut({kind:'conflict',key:o[2],mine:o[1],theirs:th,theirsRev:rv}).then(function(){toast('Conflict on '+o[2]+': both versions are saved. Open Sync review to choose.','danger')},function(){toast('Conflict on '+o[2]+': could NOT save both versions. Your version stays in this browser and nothing was changed.','danger')})},
+    function(){toast('Cloud save failed ('+c+'). Your version stays in this browser.','danger')})})});return}
+ if(force){(function nx(i){if(i>=ops.length)return;var b=db.batch();ops.slice(i,i+400).forEach(o=>{b.set(o[0],{j:o[1],cv:2});cloudSeen[o[2]]=o[1]});b.commit().then(()=>nx(i+400)).catch(e=>{ops.slice(i,i+400).forEach(o=>{delete last[o[2]]});toast('Cloud upload failed ('+c+', reason: '+tqCat(e)+').','danger')})})(0);return}
+ ops.forEach(o=>{db.runTransaction(tx=>tx.get(o[0]).then(d=>{var cur=d.exists?d.data().j:null,seen=cloudSeen[o[2]];
+   if(cur!==null&&cur!==o[1]&&cur!==seen){var e=new Error('conflict');e.conflict=cur;throw e}
+   tx.set(o[0],{j:o[1],cv:2});return o[1]})).then(j=>{cloudSeen[o[2]]=j}).catch(e=>{
+   delete last[o[2]];
+   if(e&&e.conflict){window.fxCloudConflicts.push({key:o[2],mine:o[1],cloud:e.conflict});holdPut({kind:'conflict',key:o[2],mine:o[1],theirs:e.conflict}).then(function(){toast('Conflict on '+o[2]+': both versions are saved. Open Sync review to choose.','danger')},function(){toast('Conflict on '+o[2]+': could NOT save both versions. Your version stays in this browser and nothing was changed.','danger')})}
+   else toast('Cloud save failed ('+c+', reason: '+tqCat(e)+'). Your version stays in this browser.','danger')})})}
+function push(){if(!roleDone)return;clearTimeout(pt);pt=setTimeout(()=>{var by={};SYNC.forEach(c=>{if(!canPushColl(c))return;ST.all(c,{includeArchived:true}).forEach(r=>{if(r.isSample)return;var j=JSON.stringify(r),k=c+'/'+r.id;if(last[k]!==j){last[k]=j;(by[c]=by[c]||[]).push([ref(c).doc(r.id),j,k])}})});
+var sj=JSON.stringify(ST.state.settings);if(last.s!==sj&&(ST.getSession()||{}).role==='admin'){last.s=sj;(by.meta=by.meta||[]).push([db.doc('ws/main/meta/settings'),sj,'meta/settings'])}
+Object.keys(by).forEach(c=>writeDocs(c,by[c]))},500)}
+window.fxCloudUploadAll=function(){var role=(ST.getSession()||{}).role;if(!roleDone||role!=='admin'){alert('Only a signed-in admin can upload this browser data to the cloud.');return}
+var n=0;SYNC.forEach(c=>{n+=ST.all(c,{includeArchived:true}).filter(r=>!r.isSample).length});
+if(!confirm('Upload '+n+' records from THIS browser to the shared cloud workspace? A backup file will download first. Records with the same id in the cloud will be overwritten.'))return;
+try{var a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(ST.state)],{type:'application/json'}));a.download='fujitec-backup-before-cloud-upload-'+new Date().toISOString().slice(0,10)+'.json';document.body.appendChild(a);a.click();a.remove()}catch(e){}
+last={};force=true;push();setTimeout(()=>{force=false},5000)};
+function listen(c){if(isTQ(c)){tqListen();return}(isT(c)?db.collection('ws/typed/'+c):ref(c)).onSnapshot(s=>{var todo=[];s.docChanges().forEach(x=>{if(x.type==='removed'||x.doc.metadata.hasPendingWrites)return;var j=x.doc.data().j,r=JSON.parse(j),k=c+'/'+r.id;cloudSeen[k]=j;if(last[k]===j){if(isT(c))typedRev[k]=x.doc.data().rev;return}var a=ST.state[c],i=a.findIndex(y=>y.id===r.id);if(i>=0&&(a[i].updatedAt||'')>(r.updatedAt||''))return;if(isT(c))typedRev[k]=x.doc.data().rev;todo.push({c:c,k:k,j:j,r:r,rv:x.doc.data().rev,loc:i>=0&&JSON.stringify(a[i])!==j?JSON.stringify(a[i]):null})});
+ if(!todo.length)return;
+ Promise.all(todo.filter(t=>t.loc!==null).map(t=>holdPut({kind:'replaced',key:t.k,mine:t.loc,theirs:t.j,theirsRev:t.rv==null?null:t.rv}).then(()=>t))).then(function(){
+  var n=0;todo.forEach(t=>{var a=ST.state[t.c],i=a.findIndex(y=>y.id===t.r.id);if(t.loc!==null)replaced.push({key:t.k,local:JSON.parse(t.loc)});last[t.k]=t.j;i<0?a.push(t.r):a[i]=t.r;n++});
+  var rc=todo.filter(t=>t.loc!==null).length;if(rc)toast(rc+' local record(s) were replaced by newer cloud versions. Your old copies are saved. Open Sync review to restore or download them.','warn');
+  if(n){ST.flush();fresh()}},function(e){toast('Could not save your local copies before applying cloud changes, so NOTHING was replaced. '+(e&&e.message||''),'danger')})},function(e){console.warn('cloud listen '+c+': '+e.code)})}
+window.fxDownloadReplaced=function(){var a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(replaced)],{type:'application/json'}));a.download='fujitec-replaced-local-records-'+new Date().toISOString().slice(0,10)+'.json';document.body.appendChild(a);a.click();a.remove();return replaced.length};
+/*FXT4*//*FXT5*/
 function fresh(){clearTimeout(rt);rt=setTimeout(()=>{if(!/INPUT|TEXTAREA|SELECT/.test((document.activeElement||{}).tagName||''))FH.router.refresh()},300)}
-function listen(c,me){var first=true;ref(c).onSnapshot(s=>{var n=0;s.docChanges().forEach(x=>{if(x.type==='removed'||x.doc.metadata.hasPendingWrites)return;var j=x.doc.data().j,r=JSON.parse(j),k=c+'/'+r.id;if(last[k]===j)return;var a=ST.state[c],i=a.findIndex(y=>y.id===r.id);if(i>=0&&(a[i].updatedAt||'')>(r.updatedAt||''))return;last[k]=j;i<0?a.push(r):a[i]=r;n++});
-if(n){ST.flush();fresh()}
-if(c==='users'&&first){first=false;var u=all('users'),m=u.filter(x=>(x.email||'').toLowerCase()===me)[0];
-if(!m&&s.empty){var p=u.filter(x=>x.id==='u_admin')[0];if(p)ST.update('users','u_admin',{email:me,name:me.split('@')[0]},M);else ST.insert('users',{id:'u_admin',name:me.split('@')[0],email:me,role:'admin',territory:'ALL'},M);m=ST.get('users','u_admin')}
-if(!m){auth.signOut().then(()=>login('Your email is not assigned a role yet. Ask an admin to add it under Import data, users.'));return}
-roleDone=true;ST.setSession({role:m.role,userId:m.id});ST.flush();document.head.appendChild(Object.assign(document.createElement('style'),{textContent:'[data-action="open-role-menu"]{display:none!important}'}));push();fresh()}})}
 function cloud(){var raw=localStorage.getItem('fx:fbcfg');if(!raw)return;var cfg;try{cfg=JSON.parse(raw)}catch(e){return}
 sdk(['app','auth','firestore']).then(()=>{firebase.initializeApp(cfg);auth=firebase.auth();db=firebase.firestore();try{db.enablePersistence({synchronizeTabs:true}).catch(function(){})}catch(e){}
 auth.onIdTokenChanged(u=>{window.fxToken='';if(u)u.getIdToken().then(t=>{window.fxToken=t;try{localStorage.removeItem('fm:key')}catch(e){}})});
-auth.onAuthStateChanged(u=>{if(!u){roleDone=false;login();return}var l=$('#fx-login');l&&l.remove();SYNC.forEach(c=>listen(c,(u.email||'').toLowerCase()));
-db.doc('ws/main/meta/settings').onSnapshot(d=>{if(!d.exists||d.metadata.hasPendingWrites)return;var j=d.data().j;if(last.s===j)return;last.s=j;Object.assign(ST.state.settings,JSON.parse(j));ST.flush();fresh()});
-ST.subscribe(e=>{if(e&&e.type!=='session')push()})})},()=>toast('Could not load Firebase. Check your connection.','danger'))}
+auth.onAuthStateChanged(u=>{if(!u){roleDone=false;login();return}var me=(u.email||'').toLowerCase();
+db.doc('ws/main/roles/'+me).get().then(d=>{
+ var role=d.exists&&d.data()&&d.data().role;
+ if(!role||CLOUD_ROLES.indexOf(role)<0){auth.signOut().then(()=>login('Your email has no role in the cloud workspace yet. Ask an admin to add it.'));return}
+ var l=$('#fx-login');l&&l.remove();
+ var m=ST.all('users').filter(x=>(x.email||'').toLowerCase()===me)[0];
+ if(TYPED&&window.fxTyped)typedCore=fxTyped.make(db,firebase.firestore.FieldValue.serverTimestamp(),u.uid,'ws/typed/');roleDone=true;ST.setSession({role:role,userId:m?m.id:''});baseline();ST.flush();holdBadge();
+ document.head.appendChild(Object.assign(document.createElement('style'),{textContent:'[data-action="open-role-menu"]{display:none!important}'}));
+ SYNC.forEach(c=>{if(c==='audit'&&role!=='admin'&&role!=='manager')return;listen(c)});
+ db.doc('ws/main/meta/settings').onSnapshot(d2=>{if(!d2.exists||d2.metadata.hasPendingWrites)return;var j=d2.data().j;if(last.s===j)return;last.s=j;Object.assign(ST.state.settings,JSON.parse(j));ST.flush();fresh()},function(e){console.warn('cloud settings: '+e.code)});
+ ST.subscribe(e=>{if(e&&e.type!=='session')push()});fresh()
+},function(e){auth.signOut().then(()=>login('Could not read your cloud role ('+(e&&e.code||'error')+'). Check your connection or ask an admin.'))})})},()=>toast('Could not load Firebase. Check your connection.','danger'))}
 
 var t=setInterval(()=>{if(!(window.FH&&FH.store&&FH.store.all&&$('.nav-floor')))return;clearInterval(t);ST=FH.store;
 window.fxActions=(window.fxActions||[]).concat([{t:'Import your data (CSV / JSON)',k:'Tool',f:loader},{t:'Service contracts and renewals',k:'Tool',f:()=>contracts()},{t:'Cloud setup and sign out',k:'Tool',f:setup}]);cloud()},300);
 new MutationObserver(()=>{var q=$('.fx-hero .fx-qa');if(q&&!$('[data-nx]',q)){[['Service contracts',()=>contracts()],['Import data',loader],['Cloud',setup]].forEach(x=>{var b=document.createElement('button');b.className='btn';b.type='button';b.dataset.nx=1;b.textContent=x[0];b.onclick=x[1];q.appendChild(b)})}}).observe(document.getElementById('app')||document.body,{childList:true,subtree:true});
 })();
+</script>
+
+<script id="fx-typed">
+/* fxTyped: reusable core for typed, revision-checked cloud records. Works with the Firebase compat Firestore API. No UI, no globals. */
+(function(root){
+ var STATUS_OPEN=['draft','pending_approval','approved','rejected','changes_requested'];
+ function derive(r){var s=r.status,l=r.locked;if(l===true&&(s==='sent'||s==='accepted'))return'issued';if((l===false||l==null)&&STATUS_OPEN.indexOf(s)>=0)return'draft';return'unknown'}
+ function opHash(o){var s=JSON.stringify([o.coll,o.id,o.base==null?null:o.base,o.patch]),h1=0xdeadbeef,h2=0x41c6ce57;for(var i=0;i<s.length;i++){var ch=s.charCodeAt(i);h1=Math.imul(h1^ch,2654435761);h2=Math.imul(h2^ch,1597334677)}h1=Math.imul(h1^(h1>>>16),2246822507)^Math.imul(h2^(h2>>>13),3266489909);h2=Math.imul(h2^(h2>>>16),2246822507)^Math.imul(h1^(h1>>>13),3266489909);return (h2>>>0).toString(16)+(h1>>>0).toString(16)+'-'+s.length}
+ var MAXISSUE=14; /* measured in the emulator (rules SDK, approval gate present): an issue commit passes up to 14 docs total, 15 is denied */ var MAXOPS=16; /* measured in the emulator: 18 creates pass, 19 are denied by the rules' 20-document-access limit per multi-doc request. 16 leaves margin; issue ops access more docs, so treat it as an upper bound */
+ function conflict(msg,cur){var e=new Error(msg);e.code='fx/conflict';e.cloud=cur;return e}
+ function make(db,TS,uid,prefix){
+  var P=prefix||'';var A=function(coll,id,rev){return db.doc(P+'audit/'+coll+'__'+id+'__'+rev)};
+  return {
+   derive:derive,
+   /* create: rev 1 + audit in the same batch */
+   create:function(coll,id,data){var b=db.batch();b.set(db.doc(P+coll+'/'+id),Object.assign({},data,{rev:1,createdAt:TS,updatedAt:TS,updatedBy:uid}));b.set(A(coll,id,1),{coll:coll,id:id,rev:1,action:'create',by:uid,at:TS});return b.commit()},
+   /* update: transaction, only when cloud rev === baseRev; otherwise fx/conflict carrying the cloud doc, nothing written */
+   update:function(coll,id,baseRev,patch){var r=db.doc(P+coll+'/'+id);return db.runTransaction(function(t){return t.get(r).then(function(s){if(!s.exists)throw conflict('missing',null);var cur=s.data();if(cur.rev!==baseRev)throw conflict('stale',cur);var n=baseRev+1;t.update(r,Object.assign({},patch,{rev:n,updatedAt:TS,updatedBy:uid}));t.set(A(coll,id,n),{coll:coll,id:id,rev:n,action:'update',by:uid,at:TS});return n})})},
+   /* commit: ONE transaction over many docs. ops: [{coll,id,base(null=create),patch}]. If any doc is stale or missing the whole thing aborts with fx/conflict naming the doc; nothing is written. Idempotent: re-running after success finds base mismatch (conflict), never a duplicate write. */
+   commit:function(ops){var hasIssue=ops.some(function(o){return o.coll==='quotationRevisions'&&o.patch&&o.patch.docStatus==='issued'});if(ops.length>(hasIssue?MAXISSUE:MAXOPS)){var e0=new Error('too many documents for one transaction ('+ops.length+' > '+MAXOPS+')');e0.code='fx/too-large';return Promise.reject(e0)}
+     ops.forEach(function(o){o.opId=o.opId||opHash(o)});
+     return db.runTransaction(function(t){var refs=ops.map(function(o){return db.doc(P+o.coll+'/'+o.id)});
+     return Promise.all(refs.map(function(r){return t.get(r)})).then(function(snaps){
+      var same=0;ops.forEach(function(o,i){var s=snaps[i],d=s.exists?s.data():null;
+       var landed=d&&d.opId===o.opId&&d.rev===(o.base==null?1:o.base+1)&&Object.keys(o.patch).every(function(k){return JSON.stringify(d[k])===JSON.stringify(o.patch[k])}); /* opId alone is client-side only, not security: the payload must match too */
+       if(landed){same++;return}
+       if(o.base==null){if(s.exists){var e=conflict('exists',d);e.doc=o.coll+'/'+o.id;throw e}}else{if(!s.exists){var e2=conflict('missing',null);e2.doc=o.coll+'/'+o.id;throw e2}if(d.rev!==o.base){var e3=conflict('stale',d);e3.doc=o.coll+'/'+o.id;throw e3}}});
+      if(same===ops.length)return 'already-committed'; /* uncertain-ack retry: the identical operation already landed, nothing written */
+      if(same>0){var e4=conflict('partial',null);throw e4}
+      ops.forEach(function(o,i){var n=o.base==null?1:o.base+1;
+       t.set(refs[i],Object.assign({},o.patch,o.base==null?{rev:1,opId:o.opId,createdAt:TS,updatedAt:TS,updatedBy:uid}:Object.assign({},snaps[i].data(),o.patch,{rev:n,opId:o.opId,updatedAt:TS,updatedBy:uid})));
+       t.set(A(o.coll,o.id,n),{coll:o.coll,id:o.id,rev:n,action:n===1?'create':'update',by:uid,at:TS})});return 'committed'})})},
+   /* issue a quote revision: draft -> issued (status sent). Issued docs are never edited again. */
+   issue:function(id,baseRev){return this.update('quotationRevisions',id,baseRev,Object.assign({docStatus:'issued',m:{status:'sent',locked:true,sentAt:'2026-01-01T00:00:00Z',statusHistory:[]}}))},
+   /* customer acceptance is a separate append-only event, never an edit of the issued revision */
+   accept:function(revId,n,basis,type){var b=db.batch();b.set(db.doc(P+'quoteEvents/'+revId+'__'+n),{revisionId:revId,type:type||'acceptance_recorded',basis:basis,customerVerified:false,by:uid,at:TS});return b.commit()},
+   requestApproval:function(revId,rev,j,groups,dp){var r=db.doc(P+'approvals/'+revId);return r.set({revisionId:revId,revRev:rev,revJ:j,revDp:dp,status:'pending',requestedBy:uid,at:TS,groups:groups||['manager'],decisions:{}})},
+   decide:function(revId,rev,status,group){var r=db.doc(P+'approvals/'+revId),pol=db.doc(P+'policy/approval');return db.runTransaction(function(t){return t.get(r).then(function(s){if(!s.exists)throw conflict('missing',null);var d=s.data(),ds=Object.assign({},d.decisions),g=group||'manager';ds[g]={status:status,by:uid,at:TS};var rej=Object.keys(ds).some(function(k){return ds[k].status==='rejected'}),all=d.groups.every(function(k){return ds[k]&&ds[k].status==='approved'});t.update(r,{decisions:ds,status:rej?'rejected':(all?'approved':'pending')})})})},
+   setPolicy:function(rulesEmpty,roles,rulesConfigured,expectedVer){var ref=db.doc(P+'policy/approval');return db.runTransaction(function(t){return t.get(ref).then(function(s){var cur=s.exists?(s.data().ver||0):0;if(expectedVer!=null&&cur!==expectedVer){var e=new Error('policy changed by someone else (version '+cur+', you had '+expectedVer+')');e.code='fx/stale-policy';throw e}var o={rulesEmpty:rulesEmpty===true,rulesConfigured:rulesConfigured===true,requiredRoles:roles||(s.exists&&s.data().requiredRoles)||['manager'],ver:cur+1,updatedAt:TS,updatedBy:uid};t.set(ref,o);return o})})}
+  }}
+ root.fxTyped={make:make,derive:derive,opHash:opHash,MAXOPS:MAXOPS,MAXISSUE:MAXISSUE}; if(typeof module!=='undefined')module.exports=root.fxTyped;
+})(typeof window!=='undefined'?window:globalThis);
+
+/* fxQuote: pure projection between the app's quote record (header + revisions[]) and typed docs.
+   Header doc: {j: header JSON WITHOUT revisions}. Revision doc id: <quoteId>__<revNo>, {quoteId, revNo, j: revision JSON EXACTLY as the app stored it, docStatus}.
+   Legacy/migrated revisions keep their original status (even 'accepted') inside j; migration never creates an acceptance event.
+   A NEW staff acceptance is an append-only event with a user-supplied basis, overlaid at read time on a revision whose stored status is 'sent'. No network access here. */
+(function(root){
+ function revId(qid,no){return qid+'__'+no}
+ var OVER=['acceptanceRecorded','acceptanceBasis','acceptanceEventId','customerEventType'];
+ var WANT={accepted:'acceptance_recorded',rejected:'rejection_recorded',changes_requested:'changes_requested_recorded'},REVT={acceptance_recorded:'accepted',rejection_recorded:'rejected',changes_requested_recorded:'changes_requested'};
+ var META=['status','locked','sentAt','statusHistory']; /* workflow fields live in m so that issuing changes m only and the pricing/content blob j stays byte-identical (approval binds to j) */
+ function dpOf(r){if(r.discountLegacyMissing===true||r.discountPct==null)throw new Error('discount is missing on this revision (legacy or unset): it needs a reviewed value before it can be saved to the cloud; it is NOT written as 0');var v=Number(r.discountPct);if(typeof r.discountPct==='boolean'||(typeof r.discountPct==='string'&&r.discountPct.trim()===''))v=NaN;if(!isFinite(v)||v<0||v>100)throw new Error('discount '+JSON.stringify(r.discountPct)+' is outside 0..100 or not a number: fix it before saving to the cloud');return v}
+ function cut(r){var j={},m={},dp=dpOf(r);Object.keys(r).forEach(function(k){if(k==='discountPct')return;(META.indexOf(k)>=0?m:j)[k]=r[k]});return {j:JSON.stringify(j),m:JSON.parse(JSON.stringify(m)),dp:dp}} /* the discount lives ONLY in the typed dp field (rules-readable); j never carries it, and merge() overwrites any discountPct found in j */
+ function merge(d){var r=Object.assign({},JSON.parse(d.j),d.m?(typeof d.m==='string'?JSON.parse(d.m):d.m):{});if(typeof d.dp==='number')r.discountPct=d.dp;else{delete r.discountPct;r.discountLegacyMissing=true}return r}
+ function stored(r){var c=JSON.parse(JSON.stringify(r));OVER.forEach(function(k){delete c[k]});return c}
+ /* known: optional map docId -> stored j string already in the cloud (to tell legacy 'accepted' from a new acceptance). */
+ function split(q,known){known=known||{};(q.revisions||[]).forEach(function(r){if(r)dpOf(r)}); /* check BEFORE the JSON clone: NaN/Infinity would otherwise become null and silently read as 0 */ var h=JSON.parse(JSON.stringify(q));var revs=h.revisions||[];delete h.revisions;
+  var seen={},out=[],ev=[],notes=[];
+  revs.forEach(function(r){if(seen[r.revNo])throw new Error('duplicate revNo '+r.revNo+' in '+q.id);seen[r.revNo]=1;
+   var id=revId(q.id,r.revNo),issued=r.locked===true&&(r.status==='sent'||!!WANT[r.status]);
+   if(r.locked===true&&!issued)throw new Error('unknown locked status '+r.status+' in '+id);
+   var kj=known[id]!==undefined?JSON.parse(known[id]):null,sj;
+   if(WANT[r.status]&&kj&&kj.status==='sent'){ /* customer response on an already stored sent revision: append-only event, not an edit */
+     if(r.customerEventType===WANT[r.status]){sj=kj} /* already recorded in the cloud and projected back: nothing new */
+     else{var basis=String(r.acceptanceBasis||r.customerNote||'').slice(0,200);
+       if(r.status==='accepted'&&!basis)throw new Error('acceptance basis required for '+id+': write the PO or email reference in the Customer Note');
+       ev.push({revisionId:id,type:WANT[r.status],basis:basis});sj=kj}
+   } else if(WANT[r.status]&&!kj&&!r.customerEventType&&r.acceptanceRecorded!==true){ /* legacy response, first migration: keep as is, record provenance, create NO event */
+     sj=stored(r);notes.push({revisionId:id,note:'legacy status '+r.status+' kept as stored; response provenance unknown; no event created'});
+   } else sj=stored(r);
+   var cj=cut(sj);out.push({id:id,quoteId:q.id,revNo:r.revNo,j:cj.j,m:cj.m,dp:cj.dp,docStatus:issued?'issued':'draft'})});
+  return {header:{id:q.id,j:JSON.stringify(h)},revisions:out,events:ev,migrationNotes:notes}}
+ /* docs -> quote. Arrival order does not matter. local: optional existing local quote; local-only revisions are kept. */
+ function project(headerDoc,revDocs,events,local){
+  var h=headerDoc?JSON.parse(headerDoc.j):(local?Object.assign({},local):null);if(!h)return null;delete h.revisions;
+  var byNo={};((local&&local.revisions)||[]).forEach(function(r){byNo[r.revNo]=JSON.parse(JSON.stringify(r))});
+  var evSet={};(events||[]).forEach(function(e){var o=evSet[e.revisionId];if(!o||(e.n||0)>=(o.n||0))evSet[e.revisionId]=e});
+  var seenDoc={};(revDocs||[]).forEach(function(d){seenDoc[d.id]=d});
+  Object.keys(seenDoc).forEach(function(id){var d=seenDoc[id],r=merge(d),e=evSet[id];
+   if(e&&r.status==='sent'){var et=e.type||'acceptance_recorded';r.status=REVT[et];r.customerEventType=et;r.customerResponse=r.status;if(et==='acceptance_recorded'){r.acceptanceRecorded=true;r.acceptanceBasis=e.basis;r.acceptanceEventId=id}if(!r.customerNote&&e.basis)r.customerNote=e.basis}
+   byNo[d.revNo]=r});
+  /* an event whose revision doc has not arrived yet is held by the caller; if the revision exists only locally, do not touch it */
+  h.revisions=Object.keys(byNo).map(Number).sort(function(a,b){return a-b}).map(function(n){return byNo[n]});
+  return h}
+ root.fxQuote={split:split,project:project,revId:revId,stored:stored,merge:merge};if(typeof module!=='undefined')module.exports=root.fxQuote;
+})(typeof window!=='undefined'?window:globalThis);
+
 </script>
 
 <script id="fx-flow">
@@ -23412,11 +23897,11 @@ function tot(){return FH.domain.computeQuoteTotals(items(),+S.disc||0)}
 function review(){var rows=S.L.map(function(l,i){var c='style="width:100%"';return'<tr><td><input data-i="'+i+'" data-f="description" value="'+esc(l.description)+'" '+c+'></td><td><input data-i="'+i+'" data-f="qty" type="number" min="0" value="'+l.qty+'" style="width:64px"></td><td><input data-i="'+i+'" data-f="unitPrice" type="number" min="0" value="'+l.unitPrice+'" style="width:110px"'+(l.unitPrice?'':' aria-invalid="true"')+'></td><td><input data-i="'+i+'" data-f="cost" type="number" min="0" value="'+l.cost+'" style="width:110px" title="'+(l.estCost?'Estimated at 72% of price. Edit if you know the real cost.':'')+'"></td><td>'+(l.hit?'<span class="chip">price list</span>':'<span class="chip">manual</span>')+'</td></tr>'}).join('');
 B.innerHTML=(S.notes.length?'<div class="fx-warn">'+S.notes.map(esc).join('<br>')+'</div>':'')+'<div class="fx-form"><label>Project<input id="rp" value="'+esc(S.project)+'"></label><label>Client<input id="rc" value="'+esc(S.client)+'"></label></div><div style="overflow-x:auto"><table class="tbl" style="width:100%"><thead><tr><th>Description</th><th>Qty</th><th>Unit price</th><th>Cost</th><th></th></tr></thead><tbody>'+rows+'</tbody></table></div><div class="fx-form" style="margin-top:12px"><label>Discount %<input id="rd" type="number" min="0" max="100" value="'+S.disc+'"></label><label>Delivery<input id="rl" value="'+esc(S.terms.dl)+'"></label><label class="wide">Payment<input id="rt" value="'+esc(S.terms.pt)+'"></label><label>Validity (days)<input id="rv" type="number" value="'+S.terms.v+'"></label></div><p id="rtot" style="font-weight:700"></p><p><button class="btn btn-primary" id="rs" type="button">Save quote and print proposal</button> <button class="btn" id="ro" type="button">Save quote only</button> <button class="btn" id="rb" type="button">Start over</button> <span id="rm" class="muted"></span></p>';
 function sum(){var t=tot();$('#rtot',B).textContent='Total excl. VAT: SAR '+fmt(t.total)+'   |   Margin: '+(t.marginPct!=null?Number(t.marginPct).toFixed(1)+'%':'-')+(S.L.some(function(l){return!+l.cost})?'  (blank costs estimated at 72% of price)':'')};sum();
-B.oninput=function(e){var x=e.target,i=x.dataset.i;if(i!=null)S.L[i][x.dataset.f]=x.dataset.f==='description'?x.value:+x.value;S.project=$('#rp',B).value;S.client=$('#rc',B).value;S.disc=+$('#rd',B).value||0;S.terms={dl:$('#rl',B).value,pt:$('#rt',B).value,v:$('#rv',B).value};sum()};
+B.oninput=function(e){var x=e.target,i=x.dataset.i;if(i!=null)S.L[i][x.dataset.f]=x.dataset.f==='description'?x.value:+x.value;S.project=$('#rp',B).value;S.client=$('#rc',B).value;S.discRaw=$('#rd',B).value;S.disc=+S.discRaw||0;S.terms={dl:$('#rl',B).value,pt:$('#rt',B).value,v:$('#rv',B).value};sum()};
 $('#rb',B).onclick=function(){start(S.oid)};$('#rs',B).onclick=function(){save(true)};$('#ro',B).onclick=function(){save(false)}}
 function ref(){return'Q-'+new Date().getFullYear()+'-'+(200+all('quotes').length)}
 function save(print){var me=FH.currentUser(),m=$('#rm',B);if(me.role==='exec'){m.textContent='Executive role is read-only.';return}
-var it=items();if(!it.some(function(x){return x.qty>0&&x.unitPrice>0})){m.textContent='Add at least one priced line.';return}
+var it=items();if(S.discRaw!==undefined){var dr=String(S.discRaw).trim(),dn=Number(dr);if(dr===''||!isFinite(dn)||dn<0||dn>100){m.textContent='Discount must be a number from 0 to 100 (enter 0 for no discount). Nothing was saved.';return}}if(!it.some(function(x){return x.qty>0&&x.unitPrice>0})){m.textContent='Add at least one priced line.';return}
 var o=ST.get('opportunities',S.oid),t=tot(),now=new Date().toISOString(),ex=all('quotes').filter(function(q){return q.opportunityId===S.oid&&!q.archived})[0],r=ref();
 var rev={id:FH.uid('qrev'),revNo:ex?Math.max.apply(null,ex.revisions.map(function(v){return v.revNo}))+1:1,status:'draft',locked:false,discountPct:+S.disc||0,items:it,total:t.total,cost:t.cost,margin:t.margin,marginPct:t.marginPct,sentAt:'',customerResponse:'',customerNote:'',statusHistory:[{at:now,status:'draft',by:me.id,note:'Generated from tender document (Tender to Proposal)'}]};
 try{if(ex){r=(ex.title.match(/Q-\d{4}-\d+/)||[r])[0];ST.update('quotes',ex.id,{revisions:ex.revisions.concat([rev]),updatedAt:now},{action:'quote.revision'})}
@@ -28504,10 +28989,49 @@ input:hover,select:hover{border-color:var(--border-strong)}
   .btn,select,input{min-block-size:40px}
 }
 @media print{.topbar,.sidebar,#fx-btn,.fx-hint,.fm-orb,.mobile-bottom-bar{display:none!important}}
+.toast-region{inset-block-end:calc(140px + env(safe-area-inset-bottom))!important;inset-inline-end:var(--s-5);max-width:min(380px,calc(100vw - 2*var(--s-5)))!important;box-sizing:border-box;z-index:950}
+.toast{min-width:0;overflow-wrap:anywhere}
+@media (max-width:900px){.toast-region{inset-block-end:calc(170px + env(safe-area-inset-bottom))!important}}
 </style>
-<script id="fx-ar">(function(){'use strict';var D={"Owner": "المالك", "Status": "الحالة", "Value": "القيمة", "Close": "الإغلاق", "Type": "النوع", "Units": "الوحدات", "Stage": "المرحلة", "Next Step": "الخطوة التالية", "High": "عالية", "Decision Maker": "صانع القرار", "Title": "المسمى", "Role": "الدور", "Influence": "التأثير", "Stance": "الموقف", "Reports To": "يتبع", "City": "المدينة", "Floors": "الطوابق", "Usage": "الاستخدام", "Address": "العنوان", "Prob": "الاحتمال", "Next Date": "تاريخ الخطوة", "Close Date": "تاريخ الإغلاق", "Total": "الإجمالي", "Deal Package": "حزمة الصفقة", "Territory": "المنطقة", "Segment": "القطاع", "Parent Account": "الحساب الرئيسي", "Open Deals": "الفرص المفتوحة", "Maintenance": "الصيانة", "Category": "الفئة", "Inferred suggestion": "اقتراح مستنتج", "Source Rule:": "القاعدة:", "Evidence:": "الدليل:", "Building:": "المبنى:", "Account:": "الحساب:", "Suggested Type:": "النوع المقترح:", "Latest Rev": "آخر مراجعة", "Margin %": "الهامش %", "Confidentiality": "السرية", "Latest File": "آخر ملف", "Linked": "مرتبط", "Updated": "آخر تحديث", "Open deal": "فرصة مفتوحة", "Develop": "تطوير", "Open": "مفتوح", "New": "جديد", "Convert": "تحويل", "Dismiss": "استبعاد", "Negotiate": "تفاوض", "Propose": "عرض", "Active": "نشط", "New Installation": "تركيب جديد", "Default": "افتراضي", "Modernization": "تحديث", "Repair / Aftermarket": "إصلاح / ما بعد البيع", "Tender": "مناقصة", "Deadline": "الموعد النهائي", "Link Center": "مركز الربط", "Proposal Studio": "استوديو العروض", "Quotes": "عروض الأسعار", "Quote": "عرض سعر", "Tender to Proposal": "من المناقصة إلى العرض", "Quick search": "بحث سريع", "Library": "المكتبة", "Qualify": "تأهيل", "Commitment": "التزام", "Mark done": "تم", "Meeting": "اجتماع", "Deals": "الفرص", "Tenders": "المناقصات", "Capacity (kg)": "السعة (كجم)", "Speed (m/s)": "السرعة (م/ث)", "Champion": "مؤيد رئيسي", "Neutral": "محايد", "Won": "فاز", "Skip to main content": "تخطَّ إلى المحتوى", "Tools": "الأدوات", "Shortcuts": "الاختصارات", "Home": "الرئيسية", "Backup": "نسخ احتياطي", "Elevator quote estimator": "مقدّر أسعار المصاعد", "Customer / Project": "العميل / المشروع", "Stops / floors": "المحطات / الطوابق", "Prepared by": "أعدّه", "Unit price": "سعر الوحدة", "Print bilingual proposal": "طباعة عرض ثنائي اللغة", "Backup & restore": "النسخ الاحتياطي والاستعادة", "Export JSON": "تصدير JSON", "Import JSON": "استيراد JSON", "Restore last snapshot": "استعادة آخر نسخة", "Connection": "الاتصال", "Gregorian": "ميلادي", "Last snapshot": "آخر نسخة", "move": "تنقّل", "close": "إغلاق", "Fujitec Mind": "عقل فوجيتك", "Sales intelligence · knows your data": "ذكاء المبيعات · يعرف بياناتك", "Deep analysis": "تحليل معمّق", "Supporter": "داعم", "Skeptic": "متشكك", "Blocker": "معرقل", "Lost": "خسرنا", "Overdue step": "خطوة متأخرة", "Days Inactive": "أيام الخمول", "Stalled deal": "صفقة متعثرة", "Log check-in": "تسجيل متابعة", "Sent": "مُرسل", "On Hold": "معلّق", "Pending Approval": "بانتظار الموافقة", "Export CSV": "تصدير CSV", "Theirs": "لدى العميل", "At Risk": "معرّض للخطر", "Inactive": "غير نشط", "Submitted": "مُقدَّم", "Draft": "مسودة", "Accepted": "مقبول", "Confidential": "سري", "Restricted": "مقيّد", "In Progress": "قيد التنفيذ", "Approval": "الموافقة", "Needs manager": "يحتاج مديرًا", "Approve": "موافقة", "Reject": "رفض", "Columns": "الأعمدة", "Medium": "متوسطة", "Low": "منخفضة", "Checklist": "قائمة التحقق", "Stalled": "متعثر", "Dept Sign-offs": "اعتمادات الأقسام", "Next Step description": "وصف الخطوة التالية", "Next Step date": "تاريخ الخطوة التالية", "Remove": "إزالة", "Definition:": "التعريف:", "Overdue": "متأخر", "Gatekeeper": "حارس البوابة", "Identified": "محدّدة", "Go/No-Go Pending": "بانتظار قرار المضي", "Go Approved": "تمت الموافقة على المضي", "Preparing": "قيد الإعداد", "Dismiss reason:": "سبب الاستبعاد:", "Copy": "نسخ", "Tender deadline": "موعد المناقصة", "Open tender": "فتح المناقصة", "Economic Buyer": "المشتري الاقتصادي", "Technical": "فني", "Procurement": "المشتريات", "Influencer": "مؤثر", "Accounts": "الحسابات", "Withdrawn": "منسحب", "Debriefed": "تم الإحاطة", "Completed": "مكتمل", "Closed": "مغلق", "View": "عرض", "New Opportunity": "فرصة جديدة", "Reports": "التقارير", "Buildings": "المباني", "Find any record": "ابحث عن أي سجل", "Weighted Forecast": "التوقع المرجّح", "Commit Forecast": "التوقع الملتزم به", "Active pipeline value by stage": "قيمة خط الفرص النشط حسب المرحلة", "Tender Go / No-Go Gate Approval": "موافقة بوابة قرار المضي في المناقصة", "Views:": "العروض:", "+ Save view": "+ حفظ العرض", "List": "قائمة", "Owner: All": "المالك: الكل", "Missing next step": "لا توجد خطوة تالية", "Upcoming Deadlines": "مواعيد قادمة", "Overdue Deadlines": "مواعيد متأخرة", "Submitted / Decided": "مقدَّم / محسوم", "No-Go / Withdrawn": "لا مضي / منسحب", "Open Pipeline by Opportunity Type": "الفرص المفتوحة حسب النوع", "Open Pipeline Value by Owner": "قيمة الفرص المفتوحة حسب المالك", "Lost Value": "القيمة المفقودة", "Lost Opportunities by Reason": "الفرص الخاسرة حسب السبب", "Stages & Gates": "المراحل والبوابات", "Default Prob %": "الاحتمال الافتراضي %", "Contacts": "جهات الاتصال", "System Administration & Operations": "إدارة النظام والعمليات", "Sales Execution Desk": "مكتب تنفيذ المبيعات", "Log Meeting": "تسجيل اجتماع", "Edit name & photo": "تعديل الاسم والصورة", "Open deals": "فرص مفتوحة", "Open value (SAR)": "القيمة المفتوحة (ر.س)", "Ask Fujitec Mind": "اسأل عقل فوجيتك", "Sizing Studio": "استوديو التحجيم", "Proposal Builder": "منشئ العروض", "Service contracts": "عقود الخدمة", "Import data": "استيراد بيانات", "Cloud": "السحابة", "Stalled deals": "صفقات متعثرة", "Pending approvals": "موافقات معلقة", "Overdue tasks": "مهام متأخرة", "SLA breaches": "تجاوزات اتفاقية الخدمة", "PM overdue": "صيانة وقائية متأخرة", "Low stock parts": "قطع منخفضة المخزون", "Link health": "سلامة الروابط", "Maintenance desk": "مكتب الصيانة", "My buildings": "مبانيّ", "Giga-projects": "المشاريع العملاقة", "Opportunity map": "خريطة الفرص", "Active Pipeline": "الفرص النشطة", "Stalled Deals": "صفقات متعثرة", "Pending Approvals": "موافقات معلقة", "Accounts by segment": "الحسابات حسب القطاع", "Buildings by city": "المباني حسب المدينة", "Deal value by stage (SAR)": "قيمة الفرص حسب المرحلة (ر.س)", "Pipeline by Stage": "الفرص حسب المرحلة", "Open Pipeline": "الفرص المفتوحة", "New Account": "حساب جديد", "At-Risk Accounts": "حسابات معرّضة للخطر", "Account Name": "اسم الحساب", "New Contact": "جهة اتصال جديدة", "Buildings & Equipment": "المباني والمعدات", "New Building": "مبنى جديد", "Building": "المبنى", "Board": "لوحة", "Quick presets:": "فلاتر سريعة:", "All": "الكل", "Missing / Overdue Next Step": "خطوة مفقودة / متأخرة", "All Open Deals": "كل الفرص المفتوحة", "Modernization Pipeline": "فرص التحديث", "Calendar": "التقويم", "New Tender": "مناقصة جديدة", "Quotes & Revisions": "عروض الأسعار والمراجعات", "New Quote": "عرض سعر جديد", "Approvals Queue": "قائمة الموافقات", "Approved": "تمت الموافقة", "Rejected": "مرفوض", "Changes Requested": "مطلوب تعديل", "Sales-to-Execution Handoffs": "تسليم المبيعات إلى التنفيذ", "New Handoff from Won Opp": "تسليم جديد من فرصة فائزة", "PM plan": "خطة صيانة وقائية", "New work order": "أمر عمل جديد", "Overview": "نظرة عامة", "Work orders": "أوامر العمل", "Dispatch board": "لوحة التوزيع", "PM schedule": "جدول الصيانة الوقائية", "Assets": "الأصول", "Technicians": "الفنيون", "Spare parts": "قطع الغيار", "Set up Maintenance": "إعداد الصيانة", "Load demo maintenance data": "تحميل بيانات صيانة تجريبية", "Add technician": "إضافة فني", "Add spare part": "إضافة قطعة غيار", "Aftermarket & Follow-up Leads": "فرص ما بعد البيع والمتابعة", "Re-run Rules": "إعادة تشغيل القواعد", "Settings": "الإعدادات", "Enabled": "مفعّل", "Disabled": "معطّل", "All Leads": "كل الفرص المحتملة", "Converted": "محوّل", "Dismissed": "مستبعد", "Documents & Knowledge Library": "المستندات ومكتبة المعرفة", "Reports & Forecast": "التقارير والتوقعات", "Welcome": "مرحبًا", "Create": "إنشاء", "Save": "حفظ", "Cancel": "إلغاء", "Delete": "حذف", "Edit": "تعديل", "Back": "رجوع", "Next": "التالي", "Search": "بحث", "Filter rows...": "تصفية الصفوف...", "Commit Import": "اعتماد الاستيراد", "Start Another Import": "استيراد جديد", "Load Sample CSV": "تحميل ملف CSV تجريبي", "Download Reconciliation CSV": "تنزيل ملف المطابقة", "Next: Column Mapping": "التالي: ربط الأعمدة", "Next: Staging & Dry Run": "التالي: التجهيز والتجربة", "Next: Duplicate Review": "التالي: مراجعة التكرار", "Next: Review & Commit": "التالي: المراجعة والاعتماد", "CSV Import Wizard": "معالج استيراد CSV", "Upload / Paste CSV": "رفع / لصق CSV", "Column Mapping": "ربط الأعمدة", "Staging & Dry Run": "التجهيز والتجربة", "Duplicate Review": "مراجعة التكرار", "Commit": "اعتماد", "Reconciliation": "المطابقة", "Maintenance Desk": "مكتب الصيانة", "Workspace Settings — Stages & Gates": "إعدادات المساحة — المراحل والبوابات", "Approval Rules": "قواعد الموافقة", "Pipeline Stages & Entry Gates": "مراحل الفرص وبوابات الدخول", "Save Stage Edits": "حفظ تعديلات المراحل", "Order": "الترتيب", "Label": "الاسم", "Stage ID": "معرّف المرحلة", "Follow-ups": "المتابعات", "Handoffs": "التسليم", "Documents": "المستندات", "Import": "استيراد", "My Day": "يومي", "Component & Test Lab": "مختبر المكونات والاختبار", "Admin": "المدير", "Prioritized for": "مرتّب حسب أولويات", "Assigned to me only": "المسندة إليّ فقط", "• Requested by": "• طلب من", "Upload Document": "رفع مستند", "Project Documents": "مستندات المشاريع", "Knowledge Library": "مكتبة المعرفة", "Document": "المستند", "Stage & Threshold Settings": "إعدادات المراحل والحدود", "All Owners": "كل المالكين", "Opportunity Type": "نوع الفرصة", "All Types": "كل الأنواع", "All Territories": "كل المناطق", "Reset Filters": "إعادة ضبط الفلاتر", "Export Pipeline CSV": "تصدير الفرص CSV", "Active Open Pipeline": "الفرص المفتوحة النشطة", "Won Revenue (Filtered)": "إيرادات الفرص الفائزة (مفلتر)", "At a glance": "نظرة سريعة", "Export Stage Breakdown CSV": "تصدير تفصيل المراحل CSV", "Pipeline by Stage (Funnel)": "الفرص حسب المرحلة (قمع)", "Open Pipeline Funnel by Stage": "قمع الفرص المفتوحة حسب المرحلة", "Pipeline by Type (Donut)": "الفرص حسب النوع (دائري)", "TOTAL": "الإجمالي", "Pipeline by Owner (Bar)": "الفرص حسب المالك (أعمدة)", "Default Prob.": "الاحتمال الافتراضي", "Unweighted Value": "القيمة غير المرجّحة", "Weighted Value": "القيمة المرجّحة", "Export Loss Reasons CSV": "تصدير أسباب الخسارة CSV", "Win Rate (Closed Outcomes)": "نسبة الفوز (النتائج المغلقة)", "Won Value": "قيمة الفائز", "Paused / awaiting permit": "متوقف / بانتظار تصريح", "Loss Reasons Breakdown": "تفصيل أسباب الخسارة", "Loss Reason": "سبب الخسارة", "Lost Deals": "الفرص الخاسرة", "Share": "النسبة", "Export Tenders CSV": "تصدير المناقصات CSV", "Open & on schedule": "مفتوحة وفي الموعد", "Requires late override or close": "تتطلب استثناء تأخير أو إغلاقًا", "Frozen package recorded": "تم تسجيل الحزمة المجمّدة", "Closed without submission": "أُغلقت دون تقديم", "Schedule": "الجدول", "Export Quote Aging CSV": "تصدير أعمار العروض CSV", "Sent Open Quotes by Age Bucket": "العروض المرسلة المفتوحة حسب العمر", "Sent Open Quotes Aging Buckets": "فئات أعمار العروض المرسلة", "Bucket": "الفئة", "Quote Count": "عدد العروض", "Total Value": "القيمة الإجمالية", "Rev": "المراجعة", "Sent Date": "تاريخ الإرسال", "Age": "العمر", "Export Stalled Deals CSV": "تصدير الصفقات المتعثرة CSV", "Roles & Access": "الأدوار والصلاحيات", "Lookups & Rules": "القوائم والقواعد", "Sample & Perf Data": "البيانات التجريبية والأداء", "Audit Log": "سجل التدقيق", "Integrations": "التكاملات", "Open Questions": "أسئلة مفتوحة", "Developer": "المطوّر", "Entry Gate Checks Required to Enter Stage": "فحوصات البوابة المطلوبة لدخول المرحلة", "Actions": "الإجراءات", "Add New Stage": "إضافة مرحلة جديدة", "Stage Name": "اسم المرحلة", "Add Stage": "إضافة مرحلة", "link health": "سلامة الروابط", "System health": "سلامة النظام", "System map": "خريطة النظام", "Equipment": "المعدات", "Opportunities": "الفرص", "Approvals": "الموافقات", "Leads": "الفرص المحتملة", "Meetings": "الاجتماعات", "Tasks": "المهام", "Decisions": "القرارات", "Questions": "الأسئلة", "Notes": "الملاحظات", "Team": "الفريق", "Link health checks": "فحوصات سلامة الروابط", "Broken references": "روابط مكسورة", "Open deals without a building": "فرص مفتوحة بلا مبنى", "Won deals with no handoff": "فرص فائزة بلا تسليم", "Create all handoffs": "إنشاء كل التسليمات", "Won projects with no service contract": "مشاريع فائزة بلا عقد خدمة", "Buildings with no equipment": "مبانٍ بلا معدات", "Contracted equipment without a PM plan": "معدات متعاقد عليها بلا خطة صيانة وقائية", "Protect recurring revenue.": "احمِ الإيرادات المتكررة.", "Accounts without contacts": "حسابات بلا جهات اتصال", "Accounts without a decision-maker": "حسابات بلا صانع قرار", "Identify who signs.": "حدّد من يوقّع.", "Work orders past SLA": "أوامر عمل تجاوزت اتفاقية الخدمة", "Overdue preventive maintenance": "صيانة وقائية متأخرة", "Open work orders with no technician": "أوامر عمل مفتوحة بلا فني", "Target Collection:": "المجموعة المستهدفة:", "Or paste CSV content directly": "أو الصق محتوى CSV مباشرة", "Expand all": "توسيع الكل", "Collapse": "طي", "Ref Code": "رمز المرجع"};
+<script id="fx-ar">(function(){'use strict';var D={"network": "الشبكة", "permission": "الصلاحيات", "busy": "الخدمة مشغولة", "unknown": "غير معروف", "Cloud issued, newer local edits": "أصدرتها السحابة، وتعديلات محلية أحدث", "Send unconfirmed": "الإرسال غير مؤكد", "Local edits, not in the issued cloud revision": "تعديلات محلية ليست ضمن المراجعة المُصدرة", "Send unconfirmed, edits kept": "الإرسال غير مؤكد، التعديلات محفوظة", "Cloud already issued your send": "السحابة أصدرت إرسالك بالفعل", "Cloud conflict: review needed": "تعارض مع السحابة: مطلوب مراجعة", "Edited while send unconfirmed": "تم التعديل قبل تأكيد الإرسال", "Waiting for cloud confirmation": "بانتظار تأكيد السحابة", "Check cloud now": "افحص السحابة الآن", "Sync review": "مراجعة المزامنة", "These records differ between this browser and the cloud. Both versions are saved here until you choose.": "هذه السجلات تختلف بين هذا المتصفح والسحابة. النسختان محفوظتان هنا إلى أن تختار.", "Restore my version": "استعادة نسختي", "Keep cloud version": "الإبقاء على نسخة السحابة", "Download all as file": "تنزيل الكل كملف", "Nothing to review.": "لا شيء للمراجعة.", "Owner": "المالك", "Status": "الحالة", "Value": "القيمة", "Close": "الإغلاق", "Type": "النوع", "Units": "الوحدات", "Stage": "المرحلة", "Next Step": "الخطوة التالية", "High": "عالية", "Decision Maker": "صانع القرار", "Title": "المسمى", "Role": "الدور", "Influence": "التأثير", "Stance": "الموقف", "Reports To": "يتبع", "City": "المدينة", "Floors": "الطوابق", "Usage": "الاستخدام", "Address": "العنوان", "Prob": "الاحتمال", "Next Date": "تاريخ الخطوة", "Close Date": "تاريخ الإغلاق", "Total": "الإجمالي", "Deal Package": "حزمة الصفقة", "Territory": "المنطقة", "Segment": "القطاع", "Parent Account": "الحساب الرئيسي", "Open Deals": "الفرص المفتوحة", "Maintenance": "الصيانة", "Category": "الفئة", "Inferred suggestion": "اقتراح مستنتج", "Source Rule:": "القاعدة:", "Evidence:": "الدليل:", "Building:": "المبنى:", "Account:": "الحساب:", "Suggested Type:": "النوع المقترح:", "Latest Rev": "آخر مراجعة", "Margin %": "الهامش %", "Confidentiality": "السرية", "Latest File": "آخر ملف", "Linked": "مرتبط", "Updated": "آخر تحديث", "Open deal": "فرصة مفتوحة", "Develop": "تطوير", "Open": "مفتوح", "New": "جديد", "Convert": "تحويل", "Dismiss": "استبعاد", "Negotiate": "تفاوض", "Propose": "عرض", "Active": "نشط", "New Installation": "تركيب جديد", "Default": "افتراضي", "Modernization": "تحديث", "Repair / Aftermarket": "إصلاح / ما بعد البيع", "Tender": "مناقصة", "Deadline": "الموعد النهائي", "Link Center": "مركز الربط", "Proposal Studio": "استوديو العروض", "Quotes": "عروض الأسعار", "Quote": "عرض سعر", "Tender to Proposal": "من المناقصة إلى العرض", "Quick search": "بحث سريع", "Library": "المكتبة", "Qualify": "تأهيل", "Commitment": "التزام", "Mark done": "تم", "Meeting": "اجتماع", "Deals": "الفرص", "Tenders": "المناقصات", "Capacity (kg)": "السعة (كجم)", "Speed (m/s)": "السرعة (م/ث)", "Champion": "مؤيد رئيسي", "Neutral": "محايد", "Won": "فاز", "Skip to main content": "تخطَّ إلى المحتوى", "Tools": "الأدوات", "Shortcuts": "الاختصارات", "Home": "الرئيسية", "Backup": "نسخ احتياطي", "Elevator quote estimator": "مقدّر أسعار المصاعد", "Customer / Project": "العميل / المشروع", "Stops / floors": "المحطات / الطوابق", "Prepared by": "أعدّه", "Unit price": "سعر الوحدة", "Print bilingual proposal": "طباعة عرض ثنائي اللغة", "Backup & restore": "النسخ الاحتياطي والاستعادة", "Export JSON": "تصدير JSON", "Import JSON": "استيراد JSON", "Restore last snapshot": "استعادة آخر نسخة", "Connection": "الاتصال", "Gregorian": "ميلادي", "Last snapshot": "آخر نسخة", "move": "تنقّل", "close": "إغلاق", "Fujitec Mind": "عقل فوجيتك", "Sales intelligence · knows your data": "ذكاء المبيعات · يعرف بياناتك", "Deep analysis": "تحليل معمّق", "Supporter": "داعم", "Skeptic": "متشكك", "Blocker": "معرقل", "Lost": "خسرنا", "Overdue step": "خطوة متأخرة", "Days Inactive": "أيام الخمول", "Stalled deal": "صفقة متعثرة", "Log check-in": "تسجيل متابعة", "Sent": "مُرسل", "On Hold": "معلّق", "Pending Approval": "بانتظار الموافقة", "Export CSV": "تصدير CSV", "Theirs": "لدى العميل", "At Risk": "معرّض للخطر", "Inactive": "غير نشط", "Submitted": "مُقدَّم", "Draft": "مسودة", "Accepted": "مقبول", "Confidential": "سري", "Restricted": "مقيّد", "In Progress": "قيد التنفيذ", "Approval": "الموافقة", "Needs manager": "يحتاج مديرًا", "Approve": "موافقة", "Reject": "رفض", "Columns": "الأعمدة", "Medium": "متوسطة", "Low": "منخفضة", "Checklist": "قائمة التحقق", "Stalled": "متعثر", "Dept Sign-offs": "اعتمادات الأقسام", "Next Step description": "وصف الخطوة التالية", "Next Step date": "تاريخ الخطوة التالية", "Remove": "إزالة", "Definition:": "التعريف:", "Overdue": "متأخر", "Gatekeeper": "حارس البوابة", "Identified": "محدّدة", "Go/No-Go Pending": "بانتظار قرار المضي", "Go Approved": "تمت الموافقة على المضي", "Preparing": "قيد الإعداد", "Dismiss reason:": "سبب الاستبعاد:", "Copy": "نسخ", "Tender deadline": "موعد المناقصة", "Open tender": "فتح المناقصة", "Economic Buyer": "المشتري الاقتصادي", "Technical": "فني", "Procurement": "المشتريات", "Influencer": "مؤثر", "Accounts": "الحسابات", "Withdrawn": "منسحب", "Debriefed": "تم الإحاطة", "Completed": "مكتمل", "Closed": "مغلق", "View": "عرض", "New Opportunity": "فرصة جديدة", "Reports": "التقارير", "Buildings": "المباني", "Find any record": "ابحث عن أي سجل", "Weighted Forecast": "التوقع المرجّح", "Commit Forecast": "التوقع الملتزم به", "Active pipeline value by stage": "قيمة خط الفرص النشط حسب المرحلة", "Tender Go / No-Go Gate Approval": "موافقة بوابة قرار المضي في المناقصة", "Views:": "العروض:", "+ Save view": "+ حفظ العرض", "List": "قائمة", "Owner: All": "المالك: الكل", "Missing next step": "لا توجد خطوة تالية", "Upcoming Deadlines": "مواعيد قادمة", "Overdue Deadlines": "مواعيد متأخرة", "Submitted / Decided": "مقدَّم / محسوم", "No-Go / Withdrawn": "لا مضي / منسحب", "Open Pipeline by Opportunity Type": "الفرص المفتوحة حسب النوع", "Open Pipeline Value by Owner": "قيمة الفرص المفتوحة حسب المالك", "Lost Value": "القيمة المفقودة", "Lost Opportunities by Reason": "الفرص الخاسرة حسب السبب", "Stages & Gates": "المراحل والبوابات", "Default Prob %": "الاحتمال الافتراضي %", "Contacts": "جهات الاتصال", "System Administration & Operations": "إدارة النظام والعمليات", "Sales Execution Desk": "مكتب تنفيذ المبيعات", "Log Meeting": "تسجيل اجتماع", "Edit name & photo": "تعديل الاسم والصورة", "Open deals": "فرص مفتوحة", "Open value (SAR)": "القيمة المفتوحة (ر.س)", "Ask Fujitec Mind": "اسأل عقل فوجيتك", "Sizing Studio": "استوديو التحجيم", "Proposal Builder": "منشئ العروض", "Service contracts": "عقود الخدمة", "Import data": "استيراد بيانات", "Cloud": "السحابة", "Stalled deals": "صفقات متعثرة", "Pending approvals": "موافقات معلقة", "Overdue tasks": "مهام متأخرة", "SLA breaches": "تجاوزات اتفاقية الخدمة", "PM overdue": "صيانة وقائية متأخرة", "Low stock parts": "قطع منخفضة المخزون", "Link health": "سلامة الروابط", "Maintenance desk": "مكتب الصيانة", "My buildings": "مبانيّ", "Giga-projects": "المشاريع العملاقة", "Opportunity map": "خريطة الفرص", "Active Pipeline": "الفرص النشطة", "Stalled Deals": "صفقات متعثرة", "Pending Approvals": "موافقات معلقة", "Accounts by segment": "الحسابات حسب القطاع", "Buildings by city": "المباني حسب المدينة", "Deal value by stage (SAR)": "قيمة الفرص حسب المرحلة (ر.س)", "Pipeline by Stage": "الفرص حسب المرحلة", "Open Pipeline": "الفرص المفتوحة", "New Account": "حساب جديد", "At-Risk Accounts": "حسابات معرّضة للخطر", "Account Name": "اسم الحساب", "New Contact": "جهة اتصال جديدة", "Buildings & Equipment": "المباني والمعدات", "New Building": "مبنى جديد", "Building": "المبنى", "Board": "لوحة", "Quick presets:": "فلاتر سريعة:", "All": "الكل", "Missing / Overdue Next Step": "خطوة مفقودة / متأخرة", "All Open Deals": "كل الفرص المفتوحة", "Modernization Pipeline": "فرص التحديث", "Calendar": "التقويم", "New Tender": "مناقصة جديدة", "Quotes & Revisions": "عروض الأسعار والمراجعات", "New Quote": "عرض سعر جديد", "Approvals Queue": "قائمة الموافقات", "Approved": "تمت الموافقة", "Rejected": "مرفوض", "Changes Requested": "مطلوب تعديل", "Sales-to-Execution Handoffs": "تسليم المبيعات إلى التنفيذ", "New Handoff from Won Opp": "تسليم جديد من فرصة فائزة", "PM plan": "خطة صيانة وقائية", "New work order": "أمر عمل جديد", "Overview": "نظرة عامة", "Work orders": "أوامر العمل", "Dispatch board": "لوحة التوزيع", "PM schedule": "جدول الصيانة الوقائية", "Assets": "الأصول", "Technicians": "الفنيون", "Spare parts": "قطع الغيار", "Set up Maintenance": "إعداد الصيانة", "Load demo maintenance data": "تحميل بيانات صيانة تجريبية", "Add technician": "إضافة فني", "Add spare part": "إضافة قطعة غيار", "Aftermarket & Follow-up Leads": "فرص ما بعد البيع والمتابعة", "Re-run Rules": "إعادة تشغيل القواعد", "Settings": "الإعدادات", "Enabled": "مفعّل", "Disabled": "معطّل", "All Leads": "كل الفرص المحتملة", "Converted": "محوّل", "Dismissed": "مستبعد", "Documents & Knowledge Library": "المستندات ومكتبة المعرفة", "Reports & Forecast": "التقارير والتوقعات", "Welcome": "مرحبًا", "Create": "إنشاء", "Save": "حفظ", "Cancel": "إلغاء", "Delete": "حذف", "Edit": "تعديل", "Back": "رجوع", "Next": "التالي", "Search": "بحث", "Filter rows...": "تصفية الصفوف...", "Commit Import": "اعتماد الاستيراد", "Start Another Import": "استيراد جديد", "Load Sample CSV": "تحميل ملف CSV تجريبي", "Download Reconciliation CSV": "تنزيل ملف المطابقة", "Next: Column Mapping": "التالي: ربط الأعمدة", "Next: Staging & Dry Run": "التالي: التجهيز والتجربة", "Next: Duplicate Review": "التالي: مراجعة التكرار", "Next: Review & Commit": "التالي: المراجعة والاعتماد", "CSV Import Wizard": "معالج استيراد CSV", "Upload / Paste CSV": "رفع / لصق CSV", "Column Mapping": "ربط الأعمدة", "Staging & Dry Run": "التجهيز والتجربة", "Duplicate Review": "مراجعة التكرار", "Commit": "اعتماد", "Reconciliation": "المطابقة", "Maintenance Desk": "مكتب الصيانة", "Workspace Settings — Stages & Gates": "إعدادات المساحة — المراحل والبوابات", "Approval Rules": "قواعد الموافقة", "Pipeline Stages & Entry Gates": "مراحل الفرص وبوابات الدخول", "Save Stage Edits": "حفظ تعديلات المراحل", "Order": "الترتيب", "Label": "الاسم", "Stage ID": "معرّف المرحلة", "Follow-ups": "المتابعات", "Handoffs": "التسليم", "Documents": "المستندات", "Import": "استيراد", "My Day": "يومي", "Component & Test Lab": "مختبر المكونات والاختبار", "Admin": "المدير", "Prioritized for": "مرتّب حسب أولويات", "Assigned to me only": "المسندة إليّ فقط", "• Requested by": "• طلب من", "Upload Document": "رفع مستند", "Project Documents": "مستندات المشاريع", "Knowledge Library": "مكتبة المعرفة", "Document": "المستند", "Stage & Threshold Settings": "إعدادات المراحل والحدود", "All Owners": "كل المالكين", "Opportunity Type": "نوع الفرصة", "All Types": "كل الأنواع", "All Territories": "كل المناطق", "Reset Filters": "إعادة ضبط الفلاتر", "Export Pipeline CSV": "تصدير الفرص CSV", "Active Open Pipeline": "الفرص المفتوحة النشطة", "Won Revenue (Filtered)": "إيرادات الفرص الفائزة (مفلتر)", "At a glance": "نظرة سريعة", "Export Stage Breakdown CSV": "تصدير تفصيل المراحل CSV", "Pipeline by Stage (Funnel)": "الفرص حسب المرحلة (قمع)", "Open Pipeline Funnel by Stage": "قمع الفرص المفتوحة حسب المرحلة", "Pipeline by Type (Donut)": "الفرص حسب النوع (دائري)", "TOTAL": "الإجمالي", "Pipeline by Owner (Bar)": "الفرص حسب المالك (أعمدة)", "Default Prob.": "الاحتمال الافتراضي", "Unweighted Value": "القيمة غير المرجّحة", "Weighted Value": "القيمة المرجّحة", "Export Loss Reasons CSV": "تصدير أسباب الخسارة CSV", "Win Rate (Closed Outcomes)": "نسبة الفوز (النتائج المغلقة)", "Won Value": "قيمة الفائز", "Paused / awaiting permit": "متوقف / بانتظار تصريح", "Loss Reasons Breakdown": "تفصيل أسباب الخسارة", "Loss Reason": "سبب الخسارة", "Lost Deals": "الفرص الخاسرة", "Share": "النسبة", "Export Tenders CSV": "تصدير المناقصات CSV", "Open & on schedule": "مفتوحة وفي الموعد", "Requires late override or close": "تتطلب استثناء تأخير أو إغلاقًا", "Frozen package recorded": "تم تسجيل الحزمة المجمّدة", "Closed without submission": "أُغلقت دون تقديم", "Schedule": "الجدول", "Export Quote Aging CSV": "تصدير أعمار العروض CSV", "Sent Open Quotes by Age Bucket": "العروض المرسلة المفتوحة حسب العمر", "Sent Open Quotes Aging Buckets": "فئات أعمار العروض المرسلة", "Bucket": "الفئة", "Quote Count": "عدد العروض", "Total Value": "القيمة الإجمالية", "Rev": "المراجعة", "Sent Date": "تاريخ الإرسال", "Age": "العمر", "Export Stalled Deals CSV": "تصدير الصفقات المتعثرة CSV", "Roles & Access": "الأدوار والصلاحيات", "Lookups & Rules": "القوائم والقواعد", "Sample & Perf Data": "البيانات التجريبية والأداء", "Audit Log": "سجل التدقيق", "Integrations": "التكاملات", "Open Questions": "أسئلة مفتوحة", "Developer": "المطوّر", "Entry Gate Checks Required to Enter Stage": "فحوصات البوابة المطلوبة لدخول المرحلة", "Actions": "الإجراءات", "Add New Stage": "إضافة مرحلة جديدة", "Stage Name": "اسم المرحلة", "Add Stage": "إضافة مرحلة", "link health": "سلامة الروابط", "System health": "سلامة النظام", "System map": "خريطة النظام", "Equipment": "المعدات", "Opportunities": "الفرص", "Approvals": "الموافقات", "Leads": "الفرص المحتملة", "Meetings": "الاجتماعات", "Tasks": "المهام", "Decisions": "القرارات", "Questions": "الأسئلة", "Notes": "الملاحظات", "Team": "الفريق", "Link health checks": "فحوصات سلامة الروابط", "Broken references": "روابط مكسورة", "Open deals without a building": "فرص مفتوحة بلا مبنى", "Won deals with no handoff": "فرص فائزة بلا تسليم", "Create all handoffs": "إنشاء كل التسليمات", "Won projects with no service contract": "مشاريع فائزة بلا عقد خدمة", "Buildings with no equipment": "مبانٍ بلا معدات", "Contracted equipment without a PM plan": "معدات متعاقد عليها بلا خطة صيانة وقائية", "Protect recurring revenue.": "احمِ الإيرادات المتكررة.", "Accounts without contacts": "حسابات بلا جهات اتصال", "Accounts without a decision-maker": "حسابات بلا صانع قرار", "Identify who signs.": "حدّد من يوقّع.", "Work orders past SLA": "أوامر عمل تجاوزت اتفاقية الخدمة", "Overdue preventive maintenance": "صيانة وقائية متأخرة", "Open work orders with no technician": "أوامر عمل مفتوحة بلا فني", "Target Collection:": "المجموعة المستهدفة:", "Or paste CSV content directly": "أو الصق محتوى CSV مباشرة", "Expand all": "توسيع الكل", "Collapse": "طي", "Ref Code": "رمز المرجع"};
+var X={"Cloud sending status": "حالة الإرسال السحابي", "The cloud approval policy has not loaded yet. Try again in a moment.": "لم تُحمَّل سياسة الموافقات السحابية بعد. حاول مرة أخرى بعد قليل.",
+"No cloud approval policy has been published. An admin must publish it before quotes can be sent in cloud mode.": "لم يتم نشر سياسة موافقات سحابية. يجب أن ينشرها المدير قبل إرسال العروض في الوضع السحابي.",
+"Sending is disabled in cloud mode while approval rules are configured (interim: the server cannot yet check which approvers the rules require).": "الإرسال معطّل في الوضع السحابي أثناء وجود قواعد موافقة (مؤقت: الخادم لا يستطيع بعد التحقق من الموافقين المطلوبين).",
+"Publish approval policy": "نشر سياسة الموافقات", "Publish approval policy to the cloud?": "نشر سياسة الموافقات على السحابة؟", "Publish": "نشر",
+"The cloud approval policy has not loaded yet. Nothing was sent. Try again in a moment.": "لم تُحمَّل سياسة الموافقات السحابية بعد. لم يتم إرسال أي شيء. حاول مرة أخرى بعد قليل.",
+"No cloud approval policy has been published. An admin must publish it before quotes can be sent in cloud mode. Nothing was sent.": "لم يتم نشر سياسة موافقات سحابية. يجب أن ينشرها المدير قبل إرسال العروض في الوضع السحابي. لم يتم إرسال أي شيء.",
+"Sending is disabled in cloud mode while approval rules are configured (interim: the server cannot yet check which approvers the rules require). Nothing was sent.": "الإرسال معطّل في الوضع السحابي أثناء وجود قواعد موافقة (مؤقت: الخادم لا يستطيع بعد التحقق من الموافقين المطلوبين). لم يتم إرسال أي شيء.",
+"The cloud policy changed since you loaded it. Nothing was published. Reload and review before publishing again.": "تغيّرت السياسة السحابية منذ تحميلها. لم يتم نشر شيء. أعد التحميل وراجع قبل النشر مرة أخرى.",
+"Approval Required Before Sending": "الموافقة مطلوبة قبل الإرسال", "Request Approval": "طلب الموافقة", "Triggered rules:": "القواعد المفعّلة:", "View Queue": "عرض قائمة الموافقات", "pending": "قيد الانتظار", "approved": "تمت الموافقة", "rejected": "مرفوض", "manager": "مدير", "Approval Record (revision sent)": "سجل الموافقة (تم إرسال المراجعة)", "Revision Approved": "تمت الموافقة على المراجعة", "Approval Rejected": "تم رفض الموافقة", "Approval requested and added to Approvals Queue.": "تم طلب الموافقة وإضافته إلى قائمة الموافقات.", "Approval approved.": "تمت الموافقة.", "Approval rejected.": "تم الرفض.", "Pending quote approvals and tender Go / No-Go gate decisions.": "موافقات عروض الأسعار المعلّقة وقرارات المضي / عدم المضي في المناقصات.", "Configure Approval Rules": "إعداد قواعد الموافقة", "Pending": "قيد الانتظار", "Rule / Trigger:": "القاعدة / المُحفِّز:", "Amount:": "المبلغ:", "Requester:": "مقدّم الطلب:", "Requested:": "تاريخ الطلب:", "Required role:": "الدور المطلوب:", "No decided approvals yet": "لا توجد قرارات موافقة بعد", "Completed approval decisions will appear here with actor and comment.": "ستظهر هنا قرارات الموافقة المكتملة مع اسم المقرِّر وتعليقه.", "Approve": "موافقة", "Reject": "رفض", "• Decided by": "• قرّر بواسطة", "Draft": "مسودة", "Sent": "مُرسل", "Pending Approval": "بانتظار الموافقة", "Accepted": "مقبول", "Rejected": "مرفوض", "Changes Requested": "مطلوب تعديلات", "Rev 1 Locked": "المراجعة 1 مقفلة", "Frozen & Immutable": "مجمّدة وغير قابلة للتعديل", "Immutable Sent Revision": "مراجعة مُرسلة غير قابلة للتعديل", "Response Outcome": "نتيجة رد العميل", "Customer Note": "ملاحظة العميل", "Record Customer Response": "تسجيل رد العميل", "Customer Response": "رد العميل", "Awaiting Send": "بانتظار الإرسال", "Send and lock this revision before recording customer acceptance or feedback.": "أرسل هذه المراجعة وأقفلها قبل تسجيل قبول العميل أو ملاحظاته.", "Record feedback, PO reference, or requested modifications...": "سجّل الملاحظات أو مرجع أمر الشراء أو التعديلات المطلوبة...", "Write the customer PO or email reference in the Customer Note before recording an acceptance. Nothing was recorded.": "اكتب مرجع أمر الشراء أو البريد الإلكتروني للعميل في ملاحظة العميل قبل تسجيل القبول. لم يتم تسجيل شيء.", "Send Quote": "إرسال عرض السعر", "Cancel": "إلغاء", "Approval required before sending this revision": "الموافقة مطلوبة قبل إرسال هذه المراجعة", "Sent and frozen as immutable revision": "أُرسلت وجُمّدت كمراجعة غير قابلة للتعديل", "Approval Queue": "قائمة الموافقات", "Status History": "سجل الحالات", "No status history yet": "لا يوجد سجل حالات بعد", "New Revision": "مراجعة جديدة", "All Quotes": "كل عروض الأسعار", "Revisions:": "المراجعات:", "Revision Compare": "مقارنة المراجعات"};Object.keys(X).forEach(function(k){if(!D.hasOwnProperty(k))D[k]=X[k]});
 var O=new WeakMap(),AT=['placeholder','title','aria-label'],busy=false;
 function tr(s){var t=s.trim();if(!t)return null;if(D.hasOwnProperty(t))return s.replace(t,D[t]);
+ var m2;
+ if(m2=t.match(/^Rev (\d+): (.+)$/)){var a=D[m2[2]]||m2[2];return s.replace(t,'المراجعة '+m2[1]+': '+a)}
+ if(m2=t.match(/^Rev (\d+)$/))return s.replace(t,'المراجعة '+m2[1]);
+ if(m2=t.match(/^Rev (\d+) \((.+)\)$/))return s.replace(t,'المراجعة '+m2[1]+' ('+(D[m2[2]]||m2[2])+')');
+ if(m2=t.match(/^\((Draft|Sent|Pending Approval|Accepted|Rejected|Changes Requested)\)$/))return s.replace(t,'('+D[m2[1]]+')');
+ if(m2=t.match(/^Send Quote \(Rev (\d+)\)$/))return s.replace(t,'إرسال عرض السعر (المراجعة '+m2[1]+')');
+ if(m2=t.match(/^Send & Lock Rev (\d+)\?$/))return s.replace(t,'إرسال المراجعة '+m2[1]+' وقفلها؟');
+ if(m2=t.match(/^Rev (\d+) sent and frozen\.$/))return s.replace(t,'تم إرسال المراجعة '+m2[1]+' وتجميدها.');
+ if(m2=t.match(/^Pending Approvals \((\d+)\)$/))return s.replace(t,'الموافقات المعلّقة ('+m2[1]+')');
+ if(m2=t.match(/^Approval Pending \((\d+)\)$/))return s.replace(t,'بانتظار الموافقة ('+m2[1]+')');
+ if(m2=t.match(/^Recent Decided Approvals \((\d+)\)$/))return s.replace(t,'آخر الموافقات المقرَّرة ('+m2[1]+')');
+ if(m2=t.match(/^(\d+) pending approval\(s\)$/))return s.replace(t,m2[1]+' موافقة معلّقة');
+ if(m2=t.match(/^Approval requested: (.+)$/))return s.replace(t,'تم طلب الموافقة: '+m2[1]);
+ if(m2=t.match(/^(.+) • Role: (.+)$/))return s.replace(t,m2[1]+' • الدور: '+(D[m2[2]]||m2[2]));
+ if(m2=t.match(/^Customer response \((.+?)\)(?:: (.+))?$/))return s.replace(t,'رد العميل ('+(D[m2[1]]||m2[1])+')'+(m2[2]?': '+m2[2]:''));
+ if(m2=t.match(/^Recorded Outcome: (.+)$/))return s.replace(t,'النتيجة المسجّلة: '+(D[m2[1]]||m2[1]));
+ if(m2=t.match(/^Customer response recorded: (.+)$/))return s.replace(t,'تم تسجيل رد العميل: '+(D[m2[1]]||m2[1]));
+ if(m2=t.match(/^Sent (.*[\d\u0660-\u0669].*)$/))return s.replace(t,'أُرسلت '+m2[1]);
+ if(m2=t.match(/^This revision was sent and locked on (.+?)\. Create a New Revision to modify pricing or items\.$/))return s.replace(t,'تم إرسال هذه المراجعة وقفلها في '+m2[1]+'. أنشئ مراجعة جديدة لتعديل الأسعار أو البنود.');
+ if(m2=t.match(/^Approval not synced to the cloud: (.+?)\. Your approval stays on this browser; the quote cannot be issued in the cloud until it is recorded\.$/))return s.replace(t,'لم تتم مزامنة الموافقة مع السحابة: '+m2[1]+'. تبقى موافقتك في هذا المتصفح، ولا يمكن إصدار عرض السعر في السحابة قبل تسجيلها.');
+ if(m2=t.match(/^Sending this quote freezes Rev (\d+) as an immutable revision so pricing and items cannot be altered afterwards\.$/))return s.replace(t,'سيؤدي إرسال عرض السعر هذا إلى تجميد المراجعة '+m2[1]+' فلا يمكن تعديل الأسعار أو البنود بعد ذلك.');
+
+ if(m2=t.match(/^The cloud issued the send you requested at (\S+) UTC \(confirmed by its operation id\)\. You edited this revision afterwards\. Your newer edits are kept here but are NOT in the issued revision\. Review before doing anything else\.$/))return s.replace(t,'أصدرت السحابة الإرسال الذي طلبته في '+m2[1]+' بالتوقيت العالمي (مؤكد بمعرّف العملية). عدّلت هذه المراجعة بعد ذلك. تعديلاتك الجديدة محفوظة هنا لكنها ليست ضمن المراجعة المُصدرة. راجع قبل أي إجراء آخر.');
+ if(m2=t.match(/^This revision is NOT shown as sent\. The cloud has not confirmed the send requested at (\S+) UTC\.( Your edits are kept\. The send may still have been applied by the cloud\.)?$/))return s.replace(t,'لا تُعرض هذه المراجعة كمُرسلة. لم تؤكد السحابة الإرسال المطلوب في '+m2[1]+' بالتوقيت العالمي.'+(m2[2]?' تعديلاتك محفوظة. قد تكون السحابة نفّذت الإرسال فعلًا.':''));
+ if(m2=t.match(/^Latest cloud check failed \(reason:$/))return s.replace(t,'فشل آخر فحص للسحابة (السبب:');
+ if(t==='). The earlier cloud confirmation still stands. Your newer edits are not in it. It retries with a growing delay.')return s.replace(t,'). تأكيد السحابة السابق ما زال قائمًا، وتعديلاتك الأحدث ليست ضمنه. تُعاد المحاولة بفاصل متزايد.');
+ if(t==='). Send status unknown, still NOT confirmed. It retries with a growing delay.')return s.replace(t,'). حالة الإرسال غير معروفة ولم تُؤكَّد بعد. تُعاد المحاولة بفاصل متزايد.');
  var m=t.match(/^(.+?):\s+(All)$/);if(m&&D[m[1]])return s.replace(t,D[m[1]]+': '+D.All);
  m=t.match(/^Welcome,\s+(.+)$/);if(m)return s.replace(t,D.Welcome+'، '+m[1]);
  m=t.match(/^Status:\s+(.+)$/);if(m&&D[m[1]])return s.replace(t,D.Status+': '+D[m[1]]);
@@ -28539,13 +29063,13 @@ function download(){try{var j=JSON.stringify(FH.store.state);var b=new Blob([j],
 function show(msg,btns,warn){var b=mk();b.style.cssText='position:fixed;left:0;right:0;top:0;z-index:99999;color:#fff;padding:10px 14px;font:600 14px/1.4 system-ui,sans-serif;display:flex;gap:12px;align-items:center;flex-wrap:wrap;background:'+(warn?'#8a5a00':'#b00020');b.innerHTML='';var t=document.createElement('span');t.textContent=msg;b.appendChild(t);btns.forEach(function(x){var e=document.createElement('button');e.type='button';e.textContent=x[0];e.style.cssText='background:#fff;color:#222;border:0;border-radius:6px;padding:6px 12px;font-weight:700;cursor:pointer';e.onclick=x[1];b.appendChild(e)})}
 function hide(){if(bar)bar.style.display='none'}
 var pend=false;window.addEventListener('beforeunload',function(e){if(pend){e.preventDefault();e.returnValue=''}});
-function saveIdb(){pend=true;clearTimeout(idbT);idbT=setTimeout(function(){window.__fxPutStart=performance.now();put('state',{at:Date.now(),state:FH.store.state}).then(function(){pend=false;idbOk=true;window.__fxPutMs=Math.round(performance.now()-window.__fxPutStart);
-  show(ar()?'مساحة التخزين السريع ممتلئة. يتم حفظ التغييرات في التخزين الكبير (IndexedDB) على هذا المتصفح فقط. نزّل نسخة احتياطية بانتظام.':'Quick storage is full. Changes are now saved to large browser storage (IndexedDB) on this browser only. Download a backup regularly.',[[ar()?'تنزيل نسخة احتياطية':'Download backup',download]],true)})
- .catch(function(){pend=false;idbOk=false;show(ar()?'التخزين ممتلئ والتغييرات الأخيرة غير محفوظة. نزّل نسخة احتياطية الآن.':'All browser storage failed: recent changes are NOT saved. Download a backup now.',[[ar()?'تنزيل نسخة احتياطية':'Download backup',download]])})},40)}
-function flushNow(){if(failing){clearTimeout(idbT);try{pend=false;put('state',{at:Date.now(),state:FH.store.state})}catch(e){}}}
+function saveIdb(){pend=true;clearTimeout(idbT);idbT=setTimeout(function(){window.__fxPutStart=performance.now();put('state',{at:Date.now(),state:FH.store.state}).then(function(){pend=false;idbOk=true;window.__fxPutMs=Math.round(performance.now()-window.__fxPutStart);window.__fxSaveState='committed';window.__fxSavedAt=Date.now();
+  show((ar()?'تم الحفظ ':'Saved ')+new Date().toLocaleTimeString()+' · '+(ar()?'مساحة التخزين السريع ممتلئة. يتم حفظ التغييرات في التخزين الكبير (IndexedDB) على هذا المتصفح فقط. نزّل نسخة احتياطية بانتظام.':'Quick storage is full. Changes are now saved to large browser storage (IndexedDB) on this browser only. Download a backup regularly.'),[[ar()?'تنزيل نسخة احتياطية':'Download backup',download]],true)})
+ .catch(function(){pend=false;idbOk=false;window.__fxSaveState='failed';show(ar()?'التخزين ممتلئ والتغييرات الأخيرة غير محفوظة. نزّل نسخة احتياطية الآن.':'All browser storage failed: recent changes are NOT saved. Download a backup now.',[[ar()?'تنزيل نسخة احتياطية':'Download backup',download]])})},40)}
+function flushNow(){try{if(window.FH&&FH.store&&FH.store.hasPending&&FH.store.hasPending())FH.store.flush()}catch(e){}if(failing){clearTimeout(idbT);try{pend=false;put('state',{at:Date.now(),state:FH.store.state})}catch(e){}}}
 window.addEventListener('pagehide',flushNow);document.addEventListener('visibilitychange',function(){if(document.visibilityState==='hidden')flushNow()});
 window.FX_SAVE={
- fail:function(err){failing=true;show(ar()?'جارٍ الحفظ في التخزين الكبير...':'Quick storage full, saving to large storage...',[],true);saveIdb()},
+ fail:function(err){failing=true;if(!pend&&window.__fxSaveState!=='pending'&&window.__fxSaveState!=='committed')show(ar()?'جارٍ الحفظ في التخزين الكبير...':'Quick storage full, saving to large storage...',[],true);saveIdb();return !!window.indexedDB},
  ok:function(){try{localStorage.setItem('fx:lastok',String(Date.now()))}catch(e){}if(failing){failing=false;hide();try{clearTimeout(idbT);put('state',null)}catch(e){}}},
  download:download,
  clear:function(){return put('state',null)},
@@ -28553,12 +29077,69 @@ window.FX_SAVE={
  recover:function(){return get('state')}};
 function boot(){
  if(!window.FH||!FH.store)return;
- try{FH.store.subscribe(function(e){if(failing&&!(e&&e.type==='session'))saveIdb()})}catch(e){}
+ try{FH.store.subscribe(function(e){if(failing&&!(e&&e.type==='session')){window.__fxSaveState='pending';if(bar&&bar.firstChild)bar.firstChild.textContent=(ar()?'جارٍ الحفظ... لا تغلق الصفحة':'Saving... do not close this page');saveIdb()}})}catch(e){}
  get('state').then(function(r){if(!r||!r.state)return;
   try{Object.keys(r.state).forEach(function(k){FH.store.state[k]=r.state[k]});failing=true;FH.router&&FH.router.refresh&&FH.router.refresh();saveIdb();
    show(ar()?'تمت استعادة بياناتك من التخزين الكبير ('+new Date(r.at).toLocaleString()+').':'Your data was restored from large browser storage (saved '+new Date(r.at).toLocaleString()+').',[[ar()?'تنزيل نسخة احتياطية':'Download backup',download]],true)}catch(e){alert(e.message)}})
  .catch(function(){})}
 if(document.readyState!=='loading')setTimeout(boot,800);else document.addEventListener('DOMContentLoaded',function(){setTimeout(boot,800)});
 })();</script>
-</body>
+<script id="ui2-js">/* UI2 layer: structure only. Does not read or write business data. */
+(function(){
+  if(document.documentElement.getAttribute('data-ui')!=='2')return;
+  function tx(en,ar){return document.documentElement.lang==='ar'?ar:en}
+  function mkBtn(label,fn,cls){var b=document.createElement('button');b.type='button';b.className=cls||'btn btn-sm';b.textContent=label;b.addEventListener('click',fn);return b}
+  document.addEventListener('focusin',function(e){var q=e.target.closest&&e.target.closest('.ui2-queue');if(q&&!q.classList.contains('ui2-all')){var cb=q.querySelector('.card-body');if(cb&&cb.contains(e.target)&&e.target.getBoundingClientRect().top>=cb.getBoundingClientRect().top+cb.clientHeight-4)q.classList.add('ui2-all')}});
+  function apply(){
+    var root=document.querySelector('#main-content > div');
+    if(!root||!root.querySelector('.fx-hero'))return;
+    root.classList.add('ui2-home');
+    var hero=root.querySelector('.fx-hero');
+    if(!hero.dataset.ui2){hero.dataset.ui2='1';hero.classList.add('ui2-slim');}
+    var ph=root.querySelector('.page-header');
+    if(ph&&!ph.querySelector('.ui2-tt')){
+      var host=ph.querySelector('.btn')?ph.querySelector('.btn').parentElement:ph;
+      var t=mkBtn(tx('Shortcuts and tools','اختصارات وأدوات'),function(){var o=hero.classList.toggle('ui2-open');hero.classList.toggle('ui2-slim',!o);t.setAttribute('aria-expanded',o)},'btn btn-sm ui2-tt');
+      t.setAttribute('aria-expanded','false');host.appendChild(t)}
+    root.querySelectorAll(':scope > section').forEach(function(s){
+      var title=(s.querySelector('h2,h3')||{}).textContent||'';
+      if(/Do Next Queue|قائمة/.test(title)){s.classList.add('ui2-queue');
+        if(!s.querySelector(':scope > .ui2-more')){var more=document.createElement('div');more.className='ui2-more';
+          var b1=mkBtn(tx('Show full queue','عرض القائمة كاملة'),function(){s.classList.add('ui2-all');b1.setAttribute('aria-expanded','true')},'btn btn-sm ui2-m1');b1.setAttribute('aria-expanded','false');
+          var b2=mkBtn(tx('Show fewer','عرض أقل'),function(){s.classList.remove('ui2-all')},'btn btn-sm ui2-m2');
+          more.appendChild(b1);more.appendChild(b2);s.appendChild(more)}}
+      else if(/Pipeline by Stage/.test(title))s.classList.add('ui2-chart');
+      else if(!s.className&&/Active Pipeline/.test(s.textContent))s.classList.add('ui2-kpi');
+    });
+    var map=root.querySelector('.fx-map');
+    if(map&&!map.querySelector('.ui2-ft')){var ft=mkBtn(tx('Opportunity map','خريطة الفرص')+'  +',function(){var f=map.classList.toggle('ui2-fold');ft.setAttribute('aria-expanded',!f);ft.textContent=tx('Opportunity map','خريطة الفرص')+(f?'  +':'  –')},'btn btn-ghost ui2-ft');
+      ft.setAttribute('aria-expanded','false');map.insertBefore(ft,map.firstChild);map.classList.add('ui2-fold')}
+  }
+  new MutationObserver(apply).observe(document.documentElement,{childList:true,subtree:true});
+  apply();
+})();
+;(function(){function bh(){var b=document.getElementById('demo-banner');if(b)document.documentElement.style.setProperty('--ui2-bh',b.offsetHeight+'px')}
+window.addEventListener('resize',bh);setInterval(bh,1500);setTimeout(bh,300)})();
+;document.addEventListener('scroll',function(e){var t=e.target;if(t&&t.classList&&t.closest&&t.scrollTop>0){var q=t.closest('.ui2-queue');if(q&&t.classList.contains('card-body')){q.classList.add('ui2-all');t.scrollTop=0}}},true);
+
+;(function(){function tb(){if(innerWidth>760)return;document.querySelectorAll('#main-content .table-toolbar').forEach(function(t){if(t.dataset.ui2)return;t.dataset.ui2='1';t.classList.add('ui2-tbfold');var b=document.createElement('button');b.type='button';b.className='btn btn-sm ui2-tbt';b.setAttribute('aria-expanded','false');var L=function(o){return (document.documentElement.lang==='ar'?(o?'إخفاء الفلاتر':'الفلاتر والأعمدة'):(o?'Hide filters':'Filters and columns'))};b.textContent=L(false);b.addEventListener('click',function(){var o=t.classList.toggle('ui2-tbfold')===false;b.setAttribute('aria-expanded',String(o));b.textContent=L(o)});t.appendChild(b)})}
+new MutationObserver(function(){tb()}).observe(document.body,{childList:true,subtree:true});window.addEventListener('hashchange',function(){setTimeout(tb,400)});tb()})();
+;(function(){var N=12,busy=false;
+function t(en,ar){return document.documentElement.lang==='ar'?ar:en}
+function page(){if(busy||innerWidth>760)return;busy=true;try{document.querySelectorAll('#main-content .table-cards-mobile').forEach(function(w){var cs=w.querySelectorAll(':scope>.mobile-row-card');var st=w.__ui2n||N;var bar=w.nextElementSibling&&w.nextElementSibling.classList.contains('ui2-pg')?w.nextElementSibling:null;
+if(cs.length<=N){if(bar)bar.remove();cs.forEach(function(c){c.hidden=false});return}
+cs.forEach(function(c,i){c.hidden=i>=st});
+if(!bar){bar=document.createElement('div');bar.className='ui2-pg';bar.setAttribute('role','group');var s=document.createElement('span');s.setAttribute('aria-live','polite');var b1=document.createElement('button');b1.type='button';b1.className='btn btn-sm';var b2=document.createElement('button');b2.type='button';b2.className='btn btn-sm';bar.append(s,b1,b2);w.after(bar);
+b1.addEventListener('click',function(){w.__ui2n=(w.__ui2n||N)+N;busy=false;page()});b2.addEventListener('click',function(){w.__ui2n=1e9;busy=false;page()})}
+var sp=bar.children[0],b1=bar.children[1],b2=bar.children[2];var shown=Math.min(st,cs.length);
+sp.textContent=t('Showing '+shown+' of '+cs.length,'عرض '+shown+' من '+cs.length);
+b1.textContent=t('Show '+N+' more','عرض '+N+' إضافية');b2.textContent=t('Show all','عرض الكل');b1.hidden=b2.hidden=shown>=cs.length})}finally{busy=false}}
+new MutationObserver(function(){setTimeout(page,0)}).observe(document.body,{childList:true,subtree:true});window.addEventListener('resize',page);page()})();
+;(function(){var t;function qc(){if(!/#\/quotes/.test(location.hash))return;document.querySelectorAll('table.data-table tbody tr').forEach(function(tr){var a=tr.querySelector('td a');if(!a||a.getAttribute('data-ui2c'))return;var full=a.textContent,m=full.match(/^(.*?Q-\d{4}-\d+)\s*[\u2014\u2013-]\s*(.+)$/);if(!m)return;a.setAttribute('data-ui2c','1');a.setAttribute('title',full.trim());a.setAttribute('aria-label',full.trim());a.textContent=m[1]})}
+new MutationObserver(function(){clearTimeout(t);t=setTimeout(qc,80)}).observe(document.body,{childList:true,subtree:true});window.addEventListener('hashchange',function(){setTimeout(qc,400)});qc()})();
+;(function(){var t;function sc(){document.querySelectorAll('.table-wrap:has(>table.data-table)').forEach(function(w){if(w.getAttribute('data-ui2s'))return;w.setAttribute('data-ui2s','1');w.setAttribute('tabindex','0');w.setAttribute('role','region');w.setAttribute('aria-label',(document.documentElement.lang==='ar'?'\u062C\u062F\u0648\u0644 \u0642\u0627\u0628\u0644 \u0644\u0644\u062A\u0645\u0631\u064A\u0631 \u0623\u0641\u0642\u064A\u0627\u064B':'Scrollable table, use arrow keys to scroll sideways'))})}
+new MutationObserver(function(){clearTimeout(t);t=setTimeout(sc,80)}).observe(document.body,{childList:true,subtree:true});sc()})();
+;(function(){var t;function cc(){document.querySelectorAll('a.chip>span.truncate').forEach(function(s){var a=s.parentNode;if(a.getAttribute('data-ui2k')||!a.closest('[class*=cal]'))return;var full=s.textContent.trim(),m=full.match(/^[A-Z]+-(?:[A-Z]+-)?\d{4}-(\d+)\s*\u2022\s*(.+)$/);if(!m)return;a.setAttribute('data-ui2k','1');a.setAttribute('title',full);a.setAttribute('aria-label',full);s.textContent='TND-'+m[1]+' \u2022 '+m[2].replace(/^\[SAMPLE\]\s*Tender:\s*/,'')})}
+new MutationObserver(function(){clearTimeout(t);t=setTimeout(cc,80)}).observe(document.body,{childList:true,subtree:true});window.addEventListener('hashchange',function(){setTimeout(cc,400)});cc()})();
+</script></body>
 </html>
