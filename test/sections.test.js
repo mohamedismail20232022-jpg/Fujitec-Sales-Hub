@@ -12,6 +12,7 @@ store._sections.set('ws/main/tenders',[{id:'t1',rec:{region:'N',value:5,status:'
  const empty=await S.execute({section:'accounts',fn:'count'},{store,uid:'u',role:'admin'});assert.strictEqual(empty.result.total,0);assert(empty.result.caveats.some(c=>/sees no records/.test(c)));
  assert.deepStrictEqual(S.hint('how many open tenders and quotes'),['tenders','quotes']);
  {const r=await S.execute({section:'tenders',fn:'count',groupBy:null,valueField:'',filters:null},{store,uid:'u',role:'admin'});assert.strictEqual(r.result.total,3)}
+ {const r=await S.execute({section:'Tenders',fn:'COUNT',filters:[{field:'status',op:'=',value:'open'}]},{store,uid:'u',role:'admin'});assert.strictEqual(r.result.total,2)}
  console.log('sections ok (memory store, mock only)')})().catch(e=>{console.error(e);process.exit(1)});
 (async()=>{const a=require('assert'),S=require('../lib/sections'),TC=require('../lib/toolcall'),st=require('../lib/store').memory();
  st._sections.set('ws/main/tenders',[{id:'t1',rec:{value:5}}]);let reads=0;const spy={listSection:async(...x)=>{reads++;return st.listSection(...x)}};

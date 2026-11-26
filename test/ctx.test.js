@@ -9,3 +9,4 @@ const {used}=require('../lib/chat');const cs=[{id:'S1'},{id:'S2'},{id:'S3'}];
 assert.deepEqual(used('x [ S1 ] y [S2, S3]',cs),['S1','S2','S3']);
 assert.deepEqual(used('invented [S9] and plain S1',cs),[]);
 console.log('citation matcher ok');
+{const C=require('../lib/chat'),a=require('assert');a.strictEqual(C.stripBadCites('x [S9]',[{id:'S1'}]),'x [unsupported source removed]');a.strictEqual(C.stripBadCites('x [S1]',[{id:'S1'}]),'x [S1]');console.log('unsupported citation stripping ok')}
