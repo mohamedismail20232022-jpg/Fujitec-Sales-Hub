@@ -1,0 +1,11 @@
+'use strict';
+const assert=require('assert');const {trimHits}=require('../lib/chat');
+const mk=n=>({text:'x'.repeat(n),cite:{}});
+assert.equal(trimHits([mk(10),mk(10)],{}).length,2);
+let r=trimHits([mk(60),mk(60),mk(30)],{AI_CTX_CHARS:'100'});assert.deepEqual(r.map(h=>h.text.length),[60,30]);
+r=trimHits([mk(500)],{AI_CTX_CHARS:'100'});assert.equal(r.length,1);assert.equal(r[0].text.length,100);
+console.log('ctx trim ok');
+const {used}=require('../lib/chat');const cs=[{id:'S1'},{id:'S2'},{id:'S3'}];
+assert.deepEqual(used('x [ S1 ] y [S2, S3]',cs),['S1','S2','S3']);
+assert.deepEqual(used('invented [S9] and plain S1',cs),[]);
+console.log('citation matcher ok');
