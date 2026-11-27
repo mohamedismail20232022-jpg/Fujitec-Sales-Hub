@@ -37,6 +37,7 @@ store._sections.set('ws/main/tenders',[{id:'t1',rec:{region:'N',value:5,status:'
  {st._sections.set('ws/main/contracts',[{id:'1',rec:{v:10,only:null,big:1e21,m:'5'}},{id:'2',rec:{v:'n/a',only:null,big:3,m:'7'}},{id:'3',rec:{v:30,only:null,big:Infinity,m:'x'}},{id:'4',rec:{v:'20',only:null,big:2,m:'y'}}]);
  let r=await ex({section:'contracts',fn:'sum',valueField:'v'});assert.strictEqual(r.result.total,60,'mixed numeric+n/a column stays numeric, n/a skipped');assert(r.result.caveats.some(c=>/skipped/.test(c)),'skip is reported');assert(r.result.caveats.some(c=>/exact to 6 decimal/.test(c)),'precision stated');
  await assert.rejects(()=>ex({section:'contracts',fn:'sum',valueField:'only'}),/unknown field/);
- r=await ex({section:'contracts',fn:'sum',valueField:'big'});assert.strictEqual(r.result.total,5,'1e21 and Infinity skipped, no throw');
+ // INTENTIONAL BEHAVIOUR CHANGE (Nov 27): the original assertion here was `total === 5` with '1e21 and Infinity skipped, no throw'. That returned a silently partial total, so it is replaced: beyond-1e15 and non-finite values now refuse. The original expectation is NOT satisfied by the new code.
+ await assert.rejects(()=>ex({section:'contracts',fn:'sum',valueField:'big'}),/Unsupported or out-of-range number/,'1e21 and Infinity now refuse instead of returning a partial total');
  await assert.rejects(()=>ex({section:'contracts',fn:'sum',valueField:'m'}),/not numeric/,'mostly-text column is not numeric')}
  console.log('section calc accuracy/truncation/schema gate ok (mock only)')})().catch(x=>{console.error(x);process.exit(1)});
