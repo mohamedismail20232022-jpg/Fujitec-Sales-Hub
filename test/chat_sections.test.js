@@ -21,7 +21,8 @@ let reads=0;const real=store.listSection.bind(store);store.listSection=async(...
   const o2=await C.run({uid:'u',b:{question:'What is the total value of tenders?',fileIds:[fid]},store,env,provider:p3,role:'admin'});
   assert(!/Calculation caveats:/.test(o2.body.answer)&&(o2.body.notes||[]).some(x=>/did not ask for system data/.test(x)),'original no-cue question: file-only answer plus clarification note, no section data: '+o2.body.answer);
   const o2b=await C.run({uid:'u',b:{question:'What is the total value of tenders in the system?',fileIds:[fid]},store,env,provider:p3,role:'admin'});
-  assert(/Calculation caveats:/.test(o2b.body.answer)&&/skipped/.test(o2b.body.answer)&&/6 decimal/.test(o2b.body.answer),'skip and precision caveats are visible in the answer: '+o2b.body.answer)}
+  // INTENTIONAL ASSERTION CHANGE (Nov 27 live smoke): the caveats were printed twice, once in the server render's own [Caveats: ...] block and again as a separate [Calculation caveats: ...] block. The duplicate block is no longer added when the render already shows the text. The visibility checks (skipped, 6 decimal) are unchanged; only the accepted label is widened, (exactly-once is covered in answer_tidy.test.js).
+  {const a=o2b.body.answer;assert(/(Calculation caveats|Caveats):/.test(a)&&/skipped/.test(a)&&/6 decimal/.test(a),'skip and precision caveats are visible in the answer: '+a)}}
  console.log('chat entry section gate ok (memory store + mock provider, no network)')})().catch(e=>{console.error(e);process.exit(1)});
 // file-only intent: generic words (quote, tender, contract) with files selected and no site cue must not open sections or read them
 (async()=>{const r=await D.ingest({uid:'u2',name:'sales.xlsx',buf:fs.readFileSync('fx/sales.xlsx'),store,env});let n=0;const rl=store.listSection;store.listSection=async(...a)=>{n++;return rl(...a)};
